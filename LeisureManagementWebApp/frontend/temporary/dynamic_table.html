@@ -1,0 +1,54 @@
+<html ng-app="tutorialApp">
+
+<head>
+  <meta charset="utf8" />
+  <title>AngularJS Tutorial</title>
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container"  ng-controller="ArticlesCtrl">
+
+    <form>
+      <input type="text" ng-model="search">
+      <p ng-show="search">Du suchst gerade nach: {{search}}</p>
+    </form>
+    
+    <table class="table" ng-repeat="table in tables">
+      <tr>
+          <th ng-repeat="column in table.cols">{{column}}</th>
+      </tr>
+      <!-- acces all rows in the "row"-section of tables (and filter them) -->
+      <tr ng-repeat="row in table.rows | filter:search">
+        <!-- for each key in the column-section of tables, try to access the according value of each row -->
+        <td ng-repeat="column in table.cols">{{row[column]}}</td>
+      </tr>
+    </table>
+    
+    <p> Unordered  output of the controller-routine:</p>
+    <p> {{tables}} </p>
+    
+  </div>
+  
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"> </script>
+  <script>
+  'use strict';
+
+    angular.module('tutorialApp', [])
+      .controller('ArticlesCtrl', function($scope, $http)
+      {
+        // create an empty array
+        $scope.tables = [];
+        // read data from file (via http request) -> results stored in "response"
+        $http.get('articles.json').then(function(response)
+        {
+          // response.data contains the actual data (JSON) of the http response
+          // tables.push adds two entries to the "tables"-array: rows and cols
+          // Object.keys takes all the keys from the first row, so they can be accessed in the view
+          $scope.tables.push({rows: response.data, cols: Object.keys(response.data[0])});
+        });
+      });
+  </script>
+</body>
+</html>
