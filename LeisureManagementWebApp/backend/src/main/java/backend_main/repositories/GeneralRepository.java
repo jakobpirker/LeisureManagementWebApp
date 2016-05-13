@@ -1,6 +1,5 @@
 package backend_main.repositories;
 
-import backend_main.entities.Greeting;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,17 +7,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Created by Jakob on 03.05.2016.
+ * Created by Jakob on 13.05.2016.
  */
+
 @Repository
-public class GreetingRepository {
+public class GeneralRepository<T> {
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager em_;
 
     @Transactional
-    public Greeting save(final Greeting greeting) {
-            em.persist(greeting);
-            return greeting;
+    public T save(final T save_object) {
+        em_.persist(save_object);
+        return save_object;
     }
 }

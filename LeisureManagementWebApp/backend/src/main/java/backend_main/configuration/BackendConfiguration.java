@@ -1,10 +1,3 @@
-/*
- * Project eOCS
- * Copyright @@@
- *
- * Created by clackner on 09.02.2015.
- */
-
 package backend_main.configuration;
 
 import org.springframework.context.annotation.ComponentScan;
