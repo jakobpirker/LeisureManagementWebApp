@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="LMWebApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Leisure Management WebApp</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js"></script>
+    <script src="LeisureManagementWebApp.js"></script>
+</head>
+
+<body>
+
+<section ng-controller="TabsController as tab_ctrl">
+    <h3>Tabs</h3>
+    <ul class="nav nav-tabs">
+        <li class="{active:tab_ctrl.tab === 0}">
+            <a href ng-click="tab_ctrl.selectTab(0)">Json Creation</a></li>
+        <li class="{active:tab_ctrl.tab === 1}">
+            <a href ng-click="tab_ctrl.selectTab(1)">Database Queries</a></li>
+    </ul>
+
+    <div class="tab_ctrl" ng-show="tab_ctrl.isSelected(0)" ng-controller="HttpGetController">
+        <p>URL: <input type="text" name="url" ng-model="url"/></p>
+        <button ng-click="GetData()">Create Form</button>
+        <button ng-click="SendData()">Submit</button>
+
+        <div ng-repeat="attribute in attributes">
+            <p>{{attribute}}: <input type="text" ng-model="list[$index]" /></p>
+        </div>
+        <p>PostDataResponse: {{ PostDataResponse }}</p>
+        <p>attributes: {{ attributes }}</p>
+        <p>list: {{ list }}</p>
+        <p>test: {{ test }}</p>
+    </div>
+
+    <div class="tab_ctrl"  ng-show="tab_ctrl.isSelected(1)" ng-controller="ArticlesCtrl">
+        <form>
+            <input type="text" ng-model="search">
+            <p ng-show="search">Du suchst gerade nach: {{search}}</p>
+        </form>
+
+        <table class="table" ng-repeat="table in tables">
+            <tr>
+                <th ng-repeat="column in table.cols">{{column}}</th>
+            </tr>
+            <!-- acces all rows in the "row"-section of tables (and filter them) -->
+            <tr ng-repeat="row in table.rows | filter:search">
+                <!-- for each key in the column-section of tables, try to access the according value of each row -->
+                <td ng-repeat="column in table.cols">{{row[column]}}</td>
+            </tr>
+        </table>
+
+        <p> Unordered  output of the controller-routine:</p>
+        <p> {{tables}} </p>
+        <p> {{resp}} </p>
+        <p> {{error}} </p>
+    </div>
+
+</section>
+
+</body>
+</html>

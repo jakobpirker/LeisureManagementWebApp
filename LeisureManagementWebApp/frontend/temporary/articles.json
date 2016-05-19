@@ -1,7 +1,0 @@
-[
-  {"id": "1", "name": "Pizza Vegetaria", "price": 5, "weight": 10 },
-  {"id": "2", "name": "Pizza Salami",    "price": 5.5, "weight": 2 },
-  {"id": "3", "name": "Pizza Thunfisch", "price": 6, "weight": 3 },
-  {"id": "4", "name": "Aktueller Flyer", "price": 0, "weight": 7 },
-  {"id": "5", "name": "test", "price": 10, "weight": 3 }
-]
