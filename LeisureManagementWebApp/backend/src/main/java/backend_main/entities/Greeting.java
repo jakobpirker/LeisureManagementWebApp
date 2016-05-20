@@ -11,13 +11,16 @@ public class Greeting{
     @GeneratedValue
     @Column
     @JsonIgnore     // NOTE: setter also not called!! -> Important for @GeneratedValue
-    private String id;
+    private Long id;
 
     @Column
     private String content;
 
     @Column
     private String add_content;
+
+//    @Column
+//    private String number;
 
     public Greeting() {
     }
@@ -42,11 +45,21 @@ public class Greeting{
         return this.content;
     }
 
-    public void setId(String id){
+//    @JsonProperty("Number")
+//    public String getNumber() {
+//        return number;
+//    }
+//
+//    @JsonProperty("Number")
+//    public void setNumber(String number) {
+//        this.number = number;
+//    }
+
+    public void setId(Long id){
         this.id = id;
     }
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 }
