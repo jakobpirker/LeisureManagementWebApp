@@ -13,34 +13,28 @@
 <body>
 
 <section ng-controller="WebAppController as wa_ctrl">
-    <h3>Tabs</h3>
+    <h3>Leisure Management WebApp</h3>
     <ul class="nav nav-tabs">
         <li class="{active:wa_ctrl.tab === $index}" ng-repeat="tab in tabs">
             <a href ng-click="wa_ctrl.selectTab($index)">{{tab.label}}</a></li>
         </li>
     </ul>
-    <p>temp: {{temp}} </p>
-    <p>PostDataResponse: {{ PostDataResponse }}</p>
 
     <div class="wa_ctrl" ng-show="wa_ctrl.isSelected(0)">
-        <button ng-click="postEntity(wa_ctrl.getSelected())">Submit</button>
-
         <div ng-repeat="attribute in attributes">
             <p>{{attribute}}: <input type="text" ng-model="list[$index]" /></p>
         </div>
+
+        <button ng-click="postEntity(wa_ctrl.getSelected())">Submit</button>
 
         <p>attributes: {{ attributes }}</p>
         <p>list: {{ list }}</p>
         <p>test: {{ test }}</p>
     </div>
 
-    <div class="wa_ctrl"  ng-show="wa_ctrl.isSelected(1)">
-
-        <button ng-click="GetData()">Get List</button>
-
+    <div class="wa_ctrl"  ng-show="wa_ctrl.isSelected(2)">
         <form>
             <input type="text" ng-model="search">
-            <p ng-show="search">Du suchst gerade nach: {{search}}</p>
         </form>
 
         <table class="table" ng-repeat="table in tables">
@@ -54,6 +48,41 @@
             </tr>
         </table>
     </div>
+
+    <!-- TODO: proper (adapt dynamic tabs to view) ------------------->
+
+    <div class="wa_ctrl" ng-show="wa_ctrl.isSelected(1)">
+        <div ng-repeat="attribute in attributes">
+            <p>{{attribute}}: <input type="text" ng-model="list[$index]" /></p>
+        </div>
+
+        <button ng-click="postEntity(wa_ctrl.getSelected())">Submit</button>
+
+        <p>attributes: {{ attributes }}</p>
+        <p>list: {{ list }}</p>
+        <p>test: {{ test }}</p>
+    </div>
+
+    <div class="wa_ctrl"  ng-show="wa_ctrl.isSelected(3)">
+        <form>
+            <input type="text" ng-model="search">
+        </form>
+
+        <table class="table" ng-repeat="table in tables">
+            <tr>
+                <th ng-repeat="column in table.cols">{{column}}</th>
+            </tr>
+            <!-- acces all rows in the "row"-section of tables (and filter them) -->
+            <tr ng-repeat="row in table.rows | filter:search">
+                <!-- for each key in the column-section of tables, try to access the according value of each row -->
+                <td ng-repeat="column in table.cols">{{row[column]}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ------------------------------------------------------------>
+
+    <p>Request Data: {{ request_data }}</p>
 
 </section>
 

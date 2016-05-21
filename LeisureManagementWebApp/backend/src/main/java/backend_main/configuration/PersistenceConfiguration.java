@@ -26,7 +26,7 @@ public class PersistenceConfiguration {
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUsername("root");
 		dataSource.setPassword("root");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/springbootdb");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/webappdb");
 
 		return dataSource;
 	}

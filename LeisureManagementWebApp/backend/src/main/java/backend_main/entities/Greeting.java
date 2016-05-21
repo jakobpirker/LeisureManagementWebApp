@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
-public class Greeting{
+public class Greeting {
 
     @Id
     @GeneratedValue
