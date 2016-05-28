@@ -1,31 +1,64 @@
 var app = angular.module('LMWebApp', ['ngSanitize']);
 
-app.controller("WebAppController", function ($scope, $http)
+app.controller("WebAppController", function ($scope, $http, $q)
 {
-    $scope.tables = []; // holding the entries for the dynamical tables
-    this.tab = 0;       // currently selected tab
-    $scope.list = [];   // list for the binding of the attribute contents
-
     //---------------------------------------------------------
     // list of tabs
     $scope.tabs = [];
-    $scope.tabs.push({label: "Greeting Creation", execute: getEntityForm, fkt_params: "http://localhost:8080/greeting"});
-    $scope.tabs.push({label: "Person Creation", execute: getEntityForm, fkt_params: "http://localhost:8080/person"});
-    $scope.tabs.push({label: "Greeting - List", execute: getList, fkt_params: "http://localhost:8080/greeting/list"});
-    $scope.tabs.push({label: "Person - List", execute: getList, fkt_params: "http://localhost:8080/person/list"});
+    //
+    // add new tabs following the pattern:
+    // $scope.tabs.push({label: "<your_tab_name>", execute: <your_function_name>, fkt_params: <function_params>});
+    // EXAMPLE: $scope.tabs.push({label: "Tab", execute: test, fkt_params: "test_string"});
+    //
+    // NOTE: if there's no function to call just give the object the label-property
+    // EXAMPLE: $scope.tabs.push({label: "Tab"});
     //---------------------------------------------------------
 
+    $scope.list_obj = []; // holding the entries for the dynamical tables
+    $scope.list = [];   // list for the binding of the attribute contents
+
+    $scope.error_msg = "";
+    // TODO: implement proper error-message for all functions
+
+    //---------------------------------------------------------------------
+    // initializes the web-page
+    this.initializePage = function()
+    {
+        var self = this;
+        $scope.available_entities = [];
+
+        // get all entities, that can be displayed and edited/added
+        var response = $http.get("http://localhost:8080/init/entities");
+        response.success(function(data, status, headers, config) {
+            $scope.available_entities = data;
+
+            // map the entities to the according tabs (for tab behavior)
+            $scope.available_entities.forEach(function(entity)
+            {
+                $scope.tabs.push({label:entity.label, execute: getList, fkt_params: entity.list_url});
+            });
+
+            self.selectTab($scope.tabs[0].label);
+        });
+        response.error(function(data, status, headers, config) {
+            $scope.error_msg = "Failed get-request to http://localhost:8080/init/entities"
+        });
+    };
+
+    //---------------------------------------------------------------------
+    // gets a list of a specific entitiy
     function getList(url)
     {
+        // get a list of specific elements (for list)
         var response = $http.get(url);
         response.success(function(data, status, headers, config) {
-            // response.data contains the actual data (JSON) of the http response
-            // tables.push adds two entries to the "tables"-array: rows and cols
+            // data contains the actual data (JSON) of the http response
+            // list_obj.push adds two entries to the "list_obj"-array: rows and cols
             // Object.keys takes all the keys from the first row, so they can be accessed in the view
-            // $scope.tables.push({rows: response.data, cols: Object.keys(response.data[0])});
+            // $scope.list_obj.push({rows: response.data, cols: Object.keys(response.data[0])});
             $scope.request_data = data;
-            $scope.tables = []; // clear object before pushing
-            $scope.tables.push({cols: Object.keys(data[0]), rows: data});
+            $scope.list_obj = []; // clear object before pushing
+            $scope.list_obj.push({cols: Object.keys(data[0]), rows: data});
         });
         response.error(function(data, status, headers, config) {
             $scope.request_data = data;
@@ -66,19 +99,50 @@ app.controller("WebAppController", function ($scope, $http)
         });
     };
 
+    //---------------------------------------------------------------------
+    // triggered, when a tab is selected in the html
     this.selectTab = function(setTab)
     {
         this.tab = setTab;
-        $scope.tabs[setTab].execute($scope.tabs[setTab].fkt_params);
+        // search for the tab with the name setTab
+        $scope.tabs.forEach(function(entry)
+        {
+            if(setTab === entry.label)
+            {
+                // execute function on tab-selection (if defined)
+                if(entry.hasOwnProperty('execute'))
+                {
+                    entry.execute(entry.fkt_params);
+                }
+            }
+        });
     };
 
+    //---------------------------------------------------------------------
+    // accessed by the view, to check if a specific tab is selected
     this.isSelected = function(checkTab)
     {
         return this.tab === checkTab;
     };
 
-    this.getSelected = function()
+    //---------------------------------------------------------------------
+    // checks if the list-body is visible (a tab is selected, where a database-list
+    // should be displayed) -> one body in view but multiple tabs
+    this.isListTabSelected = function()
     {
-        return this.tab;
+        var selected_tab = this.tab;
+        var ret_val = false;
+
+        $scope.available_entities.forEach(function(entry)
+        {
+            if(selected_tab === entry.label)
+            {
+                ret_val =  true;
+            }
+        });
+
+        return ret_val;
     };
+
+    this.initializePage();              // trigger page initialization
 });
