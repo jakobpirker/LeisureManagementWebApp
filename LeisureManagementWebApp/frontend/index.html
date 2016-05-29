@@ -24,15 +24,24 @@
     <!------------------------------------------------------------->
 
     <!---------------- list-tab content creation ------------------>
-    <div class="wa_ctrl"  ng-show="wa_ctrl.isListTabSelected()">
+    <div class="container" ng-show="wa_ctrl.isListTabSelected()">
         <form>
             <input type="text" ng-model="search">
         </form>
+
+        <button ng-click="wa_ctrl.getEntityAttributes()">New</button>
+        <button ng-click="wa_ctrl.postEntity()">Submit</button>
 
         <table class="table" ng-repeat="table in list_obj">
             <tr>
                 <th ng-repeat="column in table.cols">{{column}}</th>
             </tr>
+
+            <tr ng-show="new_entry_visible">
+                <td ng-repeat="attribute in attributes">
+                    <input type="text" ng-model="list[$index]" /></td>
+            </tr>
+
             <!-- acces all rows in the "row"-section of list_obj (and filter them) -->
             <tr ng-repeat="row in table.rows | filter:search">
                 <!-- for each key in the column-section of list_obj, try to access the according value of each row -->
@@ -40,6 +49,7 @@
             </tr>
         </table>
     </div>
+
     <!------------------------------------------------------------->
 
     <!-----

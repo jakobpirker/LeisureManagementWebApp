@@ -18,13 +18,14 @@ app.controller("WebAppController", function ($scope, $http, $q)
     $scope.list = [];   // list for the binding of the attribute contents
 
     $scope.error_msg = "";
+    $scope.new_entry_visible = false;   // visibility state for the new-entity-entrys
     // TODO: implement proper error-message for all functions
 
     //---------------------------------------------------------------------
     // initializes the web-page
     this.initializePage = function()
     {
-        var self = this;
+        var self = this;        // temp
         $scope.available_entities = [];
 
         // get all entities, that can be displayed and edited/added
@@ -65,21 +66,32 @@ app.controller("WebAppController", function ($scope, $http, $q)
         });
     };
 
-    function getEntityForm(url)
+    this.getEntityAttributes = function()
     {
-        var response = $http.get(url);
-        response.success(function(data, status, headers, config) {
-            $scope.request_data = data;
-            $scope.attributes = Object.keys(data);
-        });
-        response.error(function(data, status, headers, config) {
-            $scope.request_data = data;
+        var selected_tab = this.tab;    // temp
+
+        $scope.available_entities.forEach(function(entry)
+        {
+            if(selected_tab === entry.label)
+            {
+                var response = $http.get(entry.entity_url);
+                response.success(function(data, status, headers, config) {
+                    $scope.request_data = data;
+                    $scope.attributes = Object.keys(data);
+                    $scope.new_entry_visible = true;
+                });
+                response.error(function(data, status, headers, config) {
+                    $scope.request_data = data;
+                });
+            }
         });
     };
 
-    $scope.postEntity = function(selected_tab)
+    this.postEntity = function()
     {
         var jsonData = {};
+        var selected_tab = this.tab;    // temp
+        var self = this;    // temp
 
         //TODO:error when lists not equal in lenth?
 
@@ -88,14 +100,21 @@ app.controller("WebAppController", function ($scope, $http, $q)
             jsonData[$scope.attributes[i]] = $scope.list[i];
         }
 
-        $scope.test = $scope.tabs[selected_tab].fkt_params;
-    
-        var response = $http.post($scope.tabs[selected_tab].fkt_params, jsonData);
-        response.success(function(data, status, headers, config) {
-            $scope.request_data = data;
-        });
-        response.error(function(data, status, headers, config) {
-            $scope.request_data = data;
+        $scope.available_entities.forEach(function(entry)
+        {
+            if(selected_tab === entry.label)
+            {
+                var response = $http.post(entry.entity_url, jsonData);
+                response.success(function(data, status, headers, config) {
+                    $scope.request_data = data;
+                    $scope.new_entry_visible = false;
+                    // console.log();
+                    getList(entry.list_url);
+                });
+                response.error(function(data, status, headers, config) {
+                    $scope.request_data = data;
+                });
+            }
         });
     };
 
