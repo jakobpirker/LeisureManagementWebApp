@@ -14,8 +14,8 @@ app.controller("WebAppController", function ($scope, $http, $q)
     // EXAMPLE: $scope.tabs.push({label: "Tab"});
     //---------------------------------------------------------
 
-    $scope.list_obj = []; // holding the entries for the dynamical tables
     $scope.list = [];   // list for the binding of the attribute contents
+    $scope.available_entities = [];
 
     $scope.error_msg = "";
     $scope.new_entry_visible = false;   // visibility state for the new-entity-entrys
@@ -25,7 +25,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
     // initializes the web-page
     this.initializePage = function()
     {
-        var self = this;        // temp
+        var wa_ctrl = this;        // temp
         $scope.available_entities = [];
 
         // get all entities, that can be displayed and edited/added
@@ -36,10 +36,10 @@ app.controller("WebAppController", function ($scope, $http, $q)
             // map the entities to the according tabs (for tab behavior)
             $scope.available_entities.forEach(function(entity)
             {
-                $scope.tabs.push({label:entity.label, execute: getList, fkt_params: entity.list_url});
+                $scope.tabs.push({label:entity.label, execute: getList, fkt_params: entity.label});
             });
 
-            self.selectTab($scope.tabs[0].label);
+            wa_ctrl.selectTab($scope.tabs[0].label);
         });
         response.error(function(data, status, headers, config) {
             $scope.error_msg = "Failed get-request to http://localhost:8080/init/entities"
@@ -48,50 +48,47 @@ app.controller("WebAppController", function ($scope, $http, $q)
 
     //---------------------------------------------------------------------
     // gets a list of a specific entitiy
-    function getList(url)
+    function getList(entity_tab_name)
     {
-        // get a list of specific elements (for list)
-        var response = $http.get(url);
-        response.success(function(data, status, headers, config) {
-            // data contains the actual data (JSON) of the http response
-            // list_obj.push adds two entries to the "list_obj"-array: rows and cols
-            // Object.keys takes all the keys from the first row, so they can be accessed in the view
-            // $scope.list_obj.push({rows: response.data, cols: Object.keys(response.data[0])});
-            $scope.request_data = data;
-            $scope.list_obj = []; // clear object before pushing
-            $scope.list_obj.push({cols: Object.keys(data[0]), rows: data});
-        });
-        response.error(function(data, status, headers, config) {
-            $scope.request_data = data;
-        });
-    };
-
-    this.getEntityAttributes = function()
-    {
-        var selected_tab = this.tab;    // temp
-
+        // search for the according functions of the selected tab
         $scope.available_entities.forEach(function(entry)
         {
-            if(selected_tab === entry.label)
+            if(entity_tab_name === entry.label)
             {
-                var response = $http.get(entry.entity_url);
-                response.success(function(data, status, headers, config) {
-                    $scope.request_data = data;
-                    $scope.attributes = Object.keys(data);
-                    $scope.new_entry_visible = true;
-                });
-                response.error(function(data, status, headers, config) {
-                    $scope.request_data = data;
-                });
+                $http.get(entry.entity_url)
+                .then(
+                    function(response) {    // success
+                        $scope.request_data = response.data;
+                        $scope.attributes = Object.keys(response.data);
+                        // on success conduct next request, to get the actual object-list
+                        return $http.get(entry.list_url);
+                    },
+                    function(response) {   // fail
+                        $scope.request_data = data;
+                    })
+                .then(
+                    function(response) {    // success
+                        $scope.request_data = response.data;
+                        $scope.obj_list = response.data;
+                    },
+                    function(response) {    // fail
+                $scope.request_data = data;
+            });
             }
         });
+
+    };
+
+    this.showNewEntityFields = function()
+    {
+        $scope.new_entry_visible = true;
+
     };
 
     this.postEntity = function()
     {
         var jsonData = {};
-        var selected_tab = this.tab;    // temp
-        var self = this;    // temp
+        var wa_ctrl = this;    // temp
 
         //TODO:error when lists not equal in lenth?
 
@@ -102,14 +99,13 @@ app.controller("WebAppController", function ($scope, $http, $q)
 
         $scope.available_entities.forEach(function(entry)
         {
-            if(selected_tab === entry.label)
+            if(wa_ctrl.tab === entry.label)
             {
                 var response = $http.post(entry.entity_url, jsonData);
                 response.success(function(data, status, headers, config) {
                     $scope.request_data = data;
                     $scope.new_entry_visible = false;
-                    // console.log();
-                    getList(entry.list_url);
+                    getList(wa_ctrl.tab);
                 });
                 response.error(function(data, status, headers, config) {
                     $scope.request_data = data;

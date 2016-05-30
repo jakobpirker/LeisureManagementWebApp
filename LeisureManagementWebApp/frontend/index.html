@@ -29,12 +29,12 @@
             <input type="text" ng-model="search">
         </form>
 
-        <button ng-click="wa_ctrl.getEntityAttributes()">New</button>
+        <button ng-click="wa_ctrl.showNewEntityFields()">New</button>
         <button ng-click="wa_ctrl.postEntity()">Submit</button>
 
-        <table class="table" ng-repeat="table in list_obj">
+        <table class="table">
             <tr>
-                <th ng-repeat="column in table.cols">{{column}}</th>
+                <th ng-repeat="attribute in attributes">{{attribute}}</th>
             </tr>
 
             <tr ng-show="new_entry_visible">
@@ -43,9 +43,9 @@
             </tr>
 
             <!-- acces all rows in the "row"-section of list_obj (and filter them) -->
-            <tr ng-repeat="row in table.rows | filter:search">
+            <tr ng-repeat="object in obj_list | filter:search">
                 <!-- for each key in the column-section of list_obj, try to access the according value of each row -->
-                <td ng-repeat="column in table.cols">{{row[column]}}</td>
+                <td ng-repeat="attribute in attributes">{{object[attribute]}}</td>
             </tr>
         </table>
     </div>

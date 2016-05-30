@@ -26,8 +26,7 @@ public class GreetingController{
     @RequestMapping(value="/list", method= RequestMethod.GET)
     public Iterable<Greeting> getGreetings() {
         log.info("Get-List-Request received!");
-        Iterable<Greeting> test = repository_service_.getRepository().findAll();
-        return test;
+        return repository_service_.getGreetings();
     }
 
     @RequestMapping(method = RequestMethod.POST)

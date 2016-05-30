@@ -14,7 +14,7 @@ public class Person {
     @Id
     @GeneratedValue
     @Column
-    @JsonIgnore     // NOTE: setter also not called!! -> Important for @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @Column
