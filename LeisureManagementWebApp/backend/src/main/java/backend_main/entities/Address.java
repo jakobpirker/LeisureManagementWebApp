@@ -3,10 +3,7 @@ package backend_main.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Address {
@@ -18,7 +15,7 @@ public class Address {
     private Long id;
 
     @Column
-    private int postal_code;
+    private Integer postalcode;
 
     @Column
     private String city;
@@ -26,17 +23,18 @@ public class Address {
     @Column
     private String street;
 
-    @Column
-    private String add_description;
+    @OneToOne(mappedBy = "address", cascade=CascadeType.ALL)
+    @JsonIgnore // uncommenting causes crash -> Person creates address, address creates Person again...
+    private Person person;
 
     @JsonProperty("Postleitzahl")
-    public int getPostalCode() {
-        return postal_code;
+    public Integer getPostalCode() {
+        return this.postalcode;
     }
 
     @JsonProperty("Postleitzahl")
-    public void setPostalCode(int postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(Integer postalcode) {
+        this.postalcode = postalcode;
     }
 
     @JsonProperty("Stadt")
@@ -59,13 +57,13 @@ public class Address {
         this.street = street;
     }
 
-    @JsonProperty("Beschreibung")
-    public String getAdd_description() {
-        return add_description;
+
+    public Person getPerson() {
+        return person;
     }
 
-    @JsonProperty("Beschreibung")
-    public void setAdd_description(String add_description) {
-        this.add_description = add_description;
+    public void setPerson(Person person) {
+        this.person = person;
     }
+
 }

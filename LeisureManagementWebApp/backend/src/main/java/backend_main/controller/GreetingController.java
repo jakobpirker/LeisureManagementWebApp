@@ -1,7 +1,7 @@
 package backend_main.controller;
 
 import backend_main.entities.Greeting;
-import backend_main.service.RepositoryService;
+import backend_main.services.RepositoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

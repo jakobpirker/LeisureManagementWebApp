@@ -64,7 +64,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
                         return $http.get(entry.list_url);
                     },
                     function(response) {   // fail
-                        $scope.request_data = data;
+                        $scope.request_data = response;
                     })
                 .then(
                     function(response) {    // success
@@ -72,7 +72,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
                         $scope.obj_list = response.data;
                     },
                     function(response) {    // fail
-                $scope.request_data = data;
+                $scope.request_data = response;
             });
             }
         });
