@@ -2,8 +2,10 @@ package backend_main.entities.embedded_ids;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class AddressId implements Serializable {
 
     private String street;
