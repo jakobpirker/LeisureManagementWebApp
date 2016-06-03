@@ -1,5 +1,6 @@
 package backend_main.controller;
 
+import backend_main.entities.Address;
 import backend_main.entities.Person;
 import backend_main.services.RepositoryService;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ public class PersonController{
     @Autowired
     protected RepositoryService service_;
 
+
+
     @RequestMapping(method = RequestMethod.GET)
     public Person getRequest() {
         return new Person();
@@ -27,13 +30,19 @@ public class PersonController{
     @RequestMapping(method = RequestMethod.POST)
     public Person postRequest(@RequestBody Person new_person) {
         log.info("before *.save(new_person)");
-        log.info(Long.toString(new_person.getAddressId()));
+//        log.info(Long.toString(new_person.getAddressId()));
         new_person = this.service_.save(new_person);
+        log.info("after *.save(new_person)");
         return new_person;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Iterable<Person> getList() {
         return service_.getPersons();
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Address getTest() {
+        return service_.getAddressByIdAttributes("stadt", "strasse", 0);
     }
 }

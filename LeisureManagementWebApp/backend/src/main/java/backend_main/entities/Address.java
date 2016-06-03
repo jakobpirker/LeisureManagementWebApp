@@ -1,25 +1,24 @@
 package backend_main.entities;
 
+import backend_main.entities.embedded_ids.AddressId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
 @Entity
+@IdClass(AddressId.class)
 public class Address {
 
     @Id
-    @GeneratedValue
-    @Column
-    @JsonIgnore
-    private Long id;
-
     @Column
     private Integer postalcode;
 
+    @Id
     @Column
     private String city;
 
+    @Id
     @Column
     private String street;
 

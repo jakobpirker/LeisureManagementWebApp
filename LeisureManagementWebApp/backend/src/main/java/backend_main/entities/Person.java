@@ -31,10 +31,6 @@ public class Person {
 //    @JoinColumn(name = "address_id")
     private Address address;
 
-    @Transient
-    @JsonIgnore
-    private Long address_id;
-
     public Person() {
     }
 
@@ -66,20 +62,38 @@ public class Person {
         this.surname = surname;
     }
 
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    //---------------------------------------------------------------
+    // serial- and deserializing specific content
+
+    @Transient
+    @JsonIgnore
+    private Long address_id;
+
+    @JsonIgnore
+    public Long getAddressId(){
+        return address_id;
+    }
+
     @JsonProperty("Adresse")
     public Address getAddress() {
         return this.address;
     }
 
     @JsonProperty("Adresse")
-    public void setAddress(String id_string) throws IllegalArgumentException {
+    public void setAddress(String id_string){ // throws IllegalArgumentException {
         try {
             this.address_id = Long.parseLong(id_string);
         }
         catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Couldn't convert id_string to Long");
+//            throw new IllegalArgumentException("Couldn't convert id_string to Long");
         }
         this.address = null;
+        log.info("after address = null");
     }
 
 //    @JsonProperty("Adresse")
@@ -89,14 +103,4 @@ public class Person {
 //        log.info("Person.java: " + address.getCity());
 //        this.address = address;
 //    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    @JsonIgnore
-    public Long getAddressId(){
-        return address_id;
-    }
-
 }

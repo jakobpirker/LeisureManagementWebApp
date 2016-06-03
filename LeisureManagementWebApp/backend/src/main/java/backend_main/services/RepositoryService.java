@@ -30,11 +30,11 @@ public class RepositoryService{
     public Person save(Person save_person){
 
         // try to insert the valid address-object from the DB by it's id (from JSON)
-        if(save_person.getAddress() == null)
-        {
-            save_person.setAddress(address_repository_.findById(save_person.getAddressId()));
-
-        }
+//        if(save_person.getAddress() == null)
+//        {
+//            save_person.setAddress(address_repository_.findById(save_person.getAddressId()));
+//
+//        }
         return this.person_repository_.save(save_person);
     }
 
@@ -56,6 +56,11 @@ public class RepositoryService{
 
     public Iterable<Address> getAddresses(){
         return address_repository_.findAll();
+    }
+
+    public Address getAddressByIdAttributes(String city, String street, Integer postalcode)
+    {
+        return address_repository_.findByCityAndStreetAndPostalcode(city, street, postalcode);
     }
 
 }
