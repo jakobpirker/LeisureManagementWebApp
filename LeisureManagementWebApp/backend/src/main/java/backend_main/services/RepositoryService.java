@@ -4,6 +4,7 @@ import backend_main.entities.Greeting;
 import backend_main.entities.Person;
 import backend_main.entities.Address;
 
+import backend_main.entities.embedded_ids.AddressId;
 import backend_main.repositories.GreetingRepository;
 import backend_main.repositories.PersonRepository;
 import backend_main.repositories.AddressRepository;
@@ -30,11 +31,12 @@ public class RepositoryService{
     public Person save(Person save_person){
 
         // try to insert the valid address-object from the DB by it's id (from JSON)
-//        if(save_person.getAddress() == null)
-//        {
-//            save_person.setAddress(address_repository_.findById(save_person.getAddressId()));
-//
-//        }
+        if(save_person.getAddress() == null && save_person.getAddressId() != null)
+        {
+            AddressId addr_id = save_person.getAddressId();
+            save_person.setAddress(address_repository_.findByCityAndStreetAndPostalcode(addr_id.getCity(), addr_id.getStreet(), addr_id.getPostalCode()));
+
+        }
         return this.person_repository_.save(save_person);
     }
 
@@ -61,6 +63,11 @@ public class RepositoryService{
     public Address getAddressByIdAttributes(String city, String street, Integer postalcode)
     {
         return address_repository_.findByCityAndStreetAndPostalcode(city, street, postalcode);
+    }
+
+    public Iterable<Address> getAddressesByCity(String city)
+    {
+        return address_repository_.findByCity(city);
     }
 
 }

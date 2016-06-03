@@ -1,19 +1,20 @@
 package backend_main.entities;
 
+import backend_main.entities.embedded_ids.AddressId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 
 @Entity
+@JsonPropertyOrder({ "Nachname", "Vorname", "Adresse" })
 public class Person {
 
     private static final Logger log = LoggerFactory.getLogger(Person.class);
-    //    @JsonIgnore
-//    ObjectMapper mapper = new ObjectMapper();
 
     @Id
     @GeneratedValue
@@ -72,35 +73,44 @@ public class Person {
 
     @Transient
     @JsonIgnore
-    private Long address_id;
+    private AddressId address_id;
 
     @JsonIgnore
-    public Long getAddressId(){
-        return address_id;
-    }
+    @Transient
+    ObjectMapper mapper = new ObjectMapper();
 
     @JsonProperty("Adresse")
-    public Address getAddress() {
-        return this.address;
-    }
-
-    @JsonProperty("Adresse")
-    public void setAddress(String id_string){ // throws IllegalArgumentException {
-        try {
-            this.address_id = Long.parseLong(id_string);
+    public AddressId getAddress() {
+        if(this.address != null)
+        {
+            return this.address.getId();
         }
-        catch (NumberFormatException ex) {
-//            throw new IllegalArgumentException("Couldn't convert id_string to Long");
+        else
+        {
+            return null;
         }
-        this.address = null;
-        log.info("after address = null");
     }
 
 //    @JsonProperty("Adresse")
-//    public void setAddress(String address_str) throws Exception {
-//        //JSON from String to Object
-//        Address address = mapper.readValue(address_str, Address.class);
-//        log.info("Person.java: " + address.getCity());
-//        this.address = address;
+//    public void setAddress(String id_string){ // throws IllegalArgumentException {
+//        try {
+//            this.address_id = Long.parseLong(id_string);
+//        }
+//        catch (NumberFormatException ex) {
+////            throw new IllegalArgumentException("Couldn't convert id_string to Long");
+//        }
+//        this.address = null;
+//        log.info("after address = null");
 //    }
+
+    @JsonProperty("Adresse")
+    public void setAddressId(String id_string) throws Exception {
+        //JSON from String to Object
+        log.info(id_string);
+        this.address_id = mapper.readValue(id_string, AddressId.class);
+    }
+
+    public AddressId getAddressId(){
+        return this.address_id;
+    }
 }

@@ -9,5 +9,5 @@ public interface AddressRepository  extends CrudRepository<Address, Long> {
 
 //    Address findById(AddressId id);
     Address findByCityAndStreetAndPostalcode(String city, String street, Integer postalcode);
-//    Address findByCity(String city);
+    Iterable<Address> findByCity(String city);
 }

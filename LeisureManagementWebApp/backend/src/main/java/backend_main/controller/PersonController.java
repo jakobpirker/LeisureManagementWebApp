@@ -20,8 +20,6 @@ public class PersonController{
     @Autowired
     protected RepositoryService service_;
 
-
-
     @RequestMapping(method = RequestMethod.GET)
     public Person getRequest() {
         return new Person();
@@ -41,8 +39,13 @@ public class PersonController{
         return service_.getPersons();
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public Address getTest() {
+    @RequestMapping(value = "/test1", method = RequestMethod.GET)
+    public Address getTest1() {
         return service_.getAddressByIdAttributes("stadt", "strasse", 0);
+    }
+
+    @RequestMapping(value = "/test2", method = RequestMethod.GET)
+    public Iterable<Address> getTest2() {
+        return service_.getAddressesByCity("graz");
     }
 }

@@ -1,37 +1,51 @@
 package backend_main.entities.embedded_ids;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class AddressId implements Serializable {
 
+    private String street;
+    private String city;
     private Integer postalcode;
 
-    private String city;
+    public AddressId(){};
 
-    private String street;
+    public AddressId(String street, String city, Integer postalcode){
+        this.city = city;
+        this.street = street;
+        this.postalcode = postalcode;
+    }
 
+    @JsonProperty("Postleitzahl")
     public Integer getPostalCode() {
         return postalcode;
     }
 
-    public void setPostalCode(Integer postal_code_) {
-        this.postalcode = postal_code_;
-    }
-
+    @JsonProperty("Stadt")
     public String getCity() {
         return city;
     }
 
-    public void setCity(String city_) {
-        this.city = city_;
-    }
-
+    @JsonProperty("Strasse")
     public String getStreet() {
         return street;
     }
 
-    public void setStreet(String street_) {
-        this.street = street_;
+    @JsonProperty("Strasse")
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    @JsonProperty("Stadt")
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @JsonProperty("Postleitzahl")
+    public void setPostalcode(Integer postalcode) {
+        this.postalcode = postalcode;
     }
 
     @Override
