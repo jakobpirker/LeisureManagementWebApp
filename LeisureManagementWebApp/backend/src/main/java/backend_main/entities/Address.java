@@ -21,6 +21,11 @@ public class Address {
     @JsonIgnore // uncommenting causes crash -> Person creates address, address creates Person again...
     private Person person;
 
+    public Address(){
+        id = new AddressId();
+        person = null;
+    }
+
 //    @JsonProperty("Strasse")
 //    public String getStreet() {
 //        return id.getStreet();
