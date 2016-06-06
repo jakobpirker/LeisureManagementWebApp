@@ -12,7 +12,11 @@ public class AddressId implements Serializable {
     private String city;
     private Integer postalcode;
 
-    public AddressId(){};
+    public AddressId(){
+        this.street = "";
+        this.city = "";
+        this.postalcode = 0;
+    }
 
     public AddressId(String street, String city, Integer postalcode){
         this.city = city;
@@ -63,5 +67,4 @@ public class AddressId implements Serializable {
     public int hashCode(){
         return (postalcode + city + Integer.toString(postalcode)).hashCode();
     }
-
 }

@@ -14,11 +14,6 @@ app.controller("WebAppController", function ($scope, $http, $q)
     // EXAMPLE: $scope.tabs.push({label: "Tab"});
     //---------------------------------------------------------
 
-    $scope.list = [];   // list for the binding of the attribute contents
-    $scope.available_entities = [];
-
-    $scope.error_msg = "";
-    $scope.new_entry_visible = false;   // visibility state for the new-entity-entrys
     // TODO: implement proper error-message for all functions
 
     //---------------------------------------------------------------------
@@ -27,6 +22,8 @@ app.controller("WebAppController", function ($scope, $http, $q)
     {
         var wa_ctrl = this;        // temp
         $scope.available_entities = [];
+        $scope.error_msg = "";
+        $scope.new_entry_visible = false;   // visibility state for the new-entity-entrys
 
         // get all entities, that can be displayed and edited/added
         var response = $http.get("http://localhost:8080/init/entities");
@@ -36,7 +33,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
             // map the entities to the according tabs (for tab behavior)
             $scope.available_entities.forEach(function(entity)
             {
-                $scope.tabs.push({label:entity.label, execute: getList, fkt_params: entity.label});
+                $scope.tabs.push({label:entity.label, execute: fetchTabContent, fkt_params: entity.label});
             });
 
             wa_ctrl.selectTab($scope.tabs[0].label);
@@ -48,7 +45,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
 
     //---------------------------------------------------------------------
     // gets a list of a specific entitiy
-    function getList(entity_tab_name)
+    function fetchTabContent(entity_tab_name)
     {
         // search for the according functions of the selected tab
         $scope.available_entities.forEach(function(entry)
@@ -58,8 +55,33 @@ app.controller("WebAppController", function ($scope, $http, $q)
                 $http.get(entry.entity_url)
                 .then(
                     function(response) {    // success
+                        var request_data = response.data;
                         $scope.request_data = response.data;
                         $scope.attributes = Object.keys(response.data);
+                        
+                        // check/set the input types for validation
+                        $scope.input_types = new Object();
+                        $scope.attributes.forEach(function(attribute) {
+                            switch (typeof request_data[attribute]) {
+                                case typeof Number():
+                                    $scope.input_types[attribute] = "number";
+                                    break;
+                                case typeof Boolean():
+                                    $scope.input_types[attribute] = "boolean";
+                                    break;
+                                case typeof Object():
+                                    if ( request_data[attribute] instanceof Array) {
+                                        $scope.input_types[attribute] = "select";
+                                        //TODO: create dropdown entrys
+                                    }
+                                    // else {
+                                    //     $scope.input_types[attribute] = "object";
+                                    // }
+                                    // break;
+                                default:
+                                    $scope.input_types[attribute] = "text";
+                            }
+                        });
                         // on success conduct next request, to get the actual object-list
                         return $http.get(entry.list_url);
                     },
@@ -72,8 +94,8 @@ app.controller("WebAppController", function ($scope, $http, $q)
                         $scope.obj_list = response.data;
                     },
                     function(response) {    // fail
-                $scope.request_data = response;
-            });
+                        $scope.request_data = response;
+                    });
             }
         });
 
@@ -87,25 +109,20 @@ app.controller("WebAppController", function ($scope, $http, $q)
 
     this.postEntity = function()
     {
-        var jsonData = {};
         var wa_ctrl = this;    // temp
 
-        //TODO:error when lists not equal in lenth?
+        //TODO:error when not all attributes are used?
 
-        // create json object from the created form
-        for (i = 0; i < $scope.list.length; i++) {
-            jsonData[$scope.attributes[i]] = $scope.list[i];
-        }
-
+        // search for the selected tab in the given entities for post-url
         $scope.available_entities.forEach(function(entry)
         {
             if(wa_ctrl.tab === entry.label)
             {
-                var response = $http.post(entry.entity_url, jsonData);
+                var response = $http.post(entry.entity_url, $scope.new_db_object);
                 response.success(function(data, status, headers, config) {
                     $scope.request_data = data;
                     $scope.new_entry_visible = false;
-                    getList(wa_ctrl.tab);
+                    wa_ctrl.selectTab(wa_ctrl.tab); // reset the current tab
                 });
                 response.error(function(data, status, headers, config) {
                     $scope.request_data = data;
@@ -119,6 +136,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
     this.selectTab = function(setTab)
     {
         this.tab = setTab;
+        $scope.new_db_object = new Object();    // clear on tab-change
         // search for the tab with the name setTab
         $scope.tabs.forEach(function(entry)
         {
