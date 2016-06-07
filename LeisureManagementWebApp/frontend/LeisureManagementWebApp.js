@@ -59,27 +59,14 @@ app.controller("WebAppController", function ($scope, $http, $q)
                         $scope.request_data = response.data;
                         $scope.attributes = Object.keys(response.data);
                         
-                        // check/set the input types for validation
+                        // find and set the input types for validation
                         $scope.input_types = new Object();
+                        $scope.foreign_ids = new Object();
                         $scope.attributes.forEach(function(attribute) {
-                            switch (typeof request_data[attribute]) {
-                                case typeof Number():
-                                    $scope.input_types[attribute] = "number";
-                                    break;
-                                case typeof Boolean():
-                                    $scope.input_types[attribute] = "boolean";
-                                    break;
-                                case typeof Object():
-                                    if ( request_data[attribute] instanceof Array) {
-                                        $scope.input_types[attribute] = "select";
-                                        //TODO: create dropdown entrys
-                                    }
-                                    // else {
-                                    //     $scope.input_types[attribute] = "object";
-                                    // }
-                                    // break;
-                                default:
-                                    $scope.input_types[attribute] = "text";
+                            $scope.input_types[attribute] = getInputType(request_data[attribute]);
+
+                            if($scope.input_types[attribute]) {
+                                $scope.foreign_ids[attribute] = request_data[attribute];
                             }
                         });
                         // on success conduct next request, to get the actual object-list
@@ -98,13 +85,26 @@ app.controller("WebAppController", function ($scope, $http, $q)
                     });
             }
         });
+    };
 
+    //---------------------------------------------------------------------
+    // returns an input-type for a specific object type
+    function getInputType(object)
+    {
+        switch (typeof object) {
+            case typeof Number(): return "number"; break;
+            case typeof Boolean(): return "checkbox"; break;
+            case typeof Object():
+                if ( object instanceof Array) {
+                    return "select";
+                } break;
+            default: return "text";
+        }
     };
 
     this.showNewEntityFields = function()
     {
         $scope.new_entry_visible = true;
-
     };
 
     this.postEntity = function()
@@ -160,7 +160,7 @@ app.controller("WebAppController", function ($scope, $http, $q)
 
     //---------------------------------------------------------------------
     // checks if the list-body is visible (a tab is selected, where a database-list
-    // should be displayed) -> one body in view but multiple tabs
+    // should be displayed -> one body in view but multiple tabs
     this.isListTabSelected = function()
     {
         var selected_tab = this.tab;

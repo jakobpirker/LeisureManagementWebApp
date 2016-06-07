@@ -33,6 +33,9 @@ public class Person {
     private Address address;
 
     public Person() {
+        this.forename = "";
+        this.surname = "";
+        this.address = null;
     }
 
     public Long getId() {
@@ -91,22 +94,8 @@ public class Person {
         }
     }
 
-//    @JsonProperty("Adresse")
-//    public void setAddress(String id_string){ // throws IllegalArgumentException {
-//        try {
-//            this.address_id = Long.parseLong(id_string);
-//        }
-//        catch (NumberFormatException ex) {
-////            throw new IllegalArgumentException("Couldn't convert id_string to Long");
-//        }
-//        this.address = null;
-//        log.info("after address = null");
-//    }
-
     @JsonProperty("Adresse")
     public void setAddressId(String id_string) throws Exception {
-        //JSON from String to Object
-        log.info(id_string);
         this.address_id = mapper.readValue(id_string, AddressId.class);
     }
 

@@ -1,8 +1,6 @@
 package backend_main.controller;
 
-import backend_main.entities.Address;
 import backend_main.entities.Person;
-import backend_main.entities.embedded_ids.AddressId;
 import backend_main.repositories.AddressRepository;
 import backend_main.services.RepositoryService;
 import org.slf4j.Logger;
@@ -26,16 +24,13 @@ public class PersonController{
     protected RepositoryService service_;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Person getRequest() {
-        return new Person();
+    public String getRequest() {
+        return service_.addAvailableForeignIdsToPerson();
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public Person postRequest(@RequestBody Person new_person) {
-        log.info("before *.save(new_person)");
-//        log.info(Long.toString(new_person.getAddressId()));
         new_person = this.service_.save(new_person);
-        log.info("after *.save(new_person)");
         return new_person;
     }
 
@@ -44,13 +39,8 @@ public class PersonController{
         return service_.getPersons();
     }
 
-    @RequestMapping(value = "/test1", method = RequestMethod.GET)
-    public Address getTest1() {
-        return address_repository_.findById(new AddressId("34 t", "graz", 11));
-    }
-
-//    @RequestMapping(value = "/test2", method = RequestMethod.GET)
-//    public Iterable<Address> getTest2() {
-//        return service_.getAddressesByCity("graz");
+//    @RequestMapping(value = "/test1", method = RequestMethod.GET)
+//    public String getTest1() throws Exception{
+//        return service_.addAvailableForeignIdsToPerson();
 //    }
 }

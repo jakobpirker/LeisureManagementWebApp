@@ -33,18 +33,26 @@
         <button ng-click="wa_ctrl.postEntity()">Submit</button>
 
         <table class="table">
+            <!-- head-line of the table -->
             <tr>
                 <th ng-repeat="attribute in attributes">{{attribute}}</th>
             </tr>
 
+            <!-- input fields for new entries -->
             <tr ng-show="new_entry_visible">
                 <td ng-repeat="attribute in attributes">
-                    <input type="{{input_types[attribute]}}" name="{{attribute}}"ng-model="new_db_object[attribute]" /></td>
+                    <!-- choose whether to display a "normal" input type, or a dropdown-list-->
+                    <input ng-if="input_types[attribute] != 'select'" type="{{input_types[attribute]}}" name="{{attribute}}" ng-model="new_db_object[attribute]" />
+                    <select ng-if="input_types[attribute] == 'select'" ng-model ="new_db_object[attribute]">
+                        <option ng-repeat="id in foreign_ids[attribute]" value="{{id}}">{{id}}</option>
+                    </select>
+                </td>
             </tr>
 
-            <!-- acces all rows in the "row"-section of list_obj (and filter them) -->
+            <!-- actual table -->
+            <!-- row-section: object = one object (= row) of the list -->
             <tr ng-repeat="object in obj_list | filter:search">
-                <!-- for each key in the column-section of list_obj, try to access the according value of each row -->
+                <!-- column-section: access every property of every object -->
                 <td ng-repeat="attribute in attributes">{{object[attribute]}}</td>
             </tr>
         </table>
@@ -61,10 +69,13 @@
 
     ----->
 
-    <p>request_data: {{request_data}}</p>
-    <p>new_db_object: {{new_db_object}}</p>
-    <p>input_types: {{input_types}}</p>
-    <p>attributes: {{attributes}}</p>
+
+    <!--<p>request_data: {{request_data}}</p>-->
+    <!--<p>new_db_object: {{new_db_object}}</p>-->
+    <!--<p>input_types: {{input_types}}</p>-->
+    <!--<p>attributes: {{attributes}}</p>-->
+    <!--<p>foreign_ids: {{foreign_ids}}</p>-->
+
 
 </section>
 

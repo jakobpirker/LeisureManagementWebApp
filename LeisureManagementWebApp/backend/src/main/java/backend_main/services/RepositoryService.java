@@ -9,10 +9,18 @@ import backend_main.repositories.GreetingRepository;
 import backend_main.repositories.PersonRepository;
 import backend_main.repositories.AddressRepository;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class RepositoryService{
@@ -31,12 +39,10 @@ public class RepositoryService{
     public Person save(Person save_person){
 
         // try to insert the valid address-object from the DB by it's id (from JSON)
-//        if(save_person.getAddress() == null && save_person.getAddressId() != null)
-//        {
-//            AddressId addr_id = save_person.getAddressId();
-//            save_person.setAddress(address_repository_.findByCityAndStreetAndPostalcode(addr_id.getCity(), addr_id.getStreet(), addr_id.getPostalCode()));
-//
-//        }
+        if(save_person.getAddress() == null && save_person.getAddressId() != null)
+        {
+            save_person.setAddress(address_repository_.findById(save_person.getAddressId()));
+        }
         return this.person_repository_.save(save_person);
     }
 
@@ -60,14 +66,22 @@ public class RepositoryService{
         return address_repository_.findAll();
     }
 
-//    public Address getAddressByIdAttributes(String city, String street, Integer postalcode)
-//    {
-//        return address_repository_.findByCityAndStreetAndPostalcode(city, street, postalcode);
-//    }
-//
-//    public Iterable<Address> getAddressesByCity(String city)
-//    {
-//        return address_repository_.findByCity(city);
-//    }
+    public String addAvailableForeignIdsToPerson() {
 
+        ObjectMapper mapper = new ObjectMapper();
+
+        JsonNode person = mapper.valueToTree(new Person());
+        JsonNode address_ids = mapper.createArrayNode();
+
+        Iterable<Address> addresses = address_repository_.findAll();
+
+        for(Iterator<Address> i = addresses.iterator(); i.hasNext(); ) {
+            ((ArrayNode) address_ids).add(mapper.valueToTree(i.next().getId()));
+        }
+
+        ((ObjectNode) person).put("Adresse", address_ids);
+//        ((ObjectNode) person).
+
+        return person.toString();
+    }
 }
