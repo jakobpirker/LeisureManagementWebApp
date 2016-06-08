@@ -1,11 +1,13 @@
 package backend_main.entities.embedded_ids;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
+//@JsonPropertyOrder({})
 public class AddressId implements Serializable {
 
     private String street;

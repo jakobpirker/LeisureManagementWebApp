@@ -1,74 +1,57 @@
 package backend_main.entities;
 
 import backend_main.entities.embedded_ids.AddressId;
+import backend_main.entities.embedded_ids.PersonId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 
 @Entity
-@JsonPropertyOrder({ "Nachname", "Vorname", "Adresse" })
+@JsonPropertyOrder({ "id", "Telefonnummer", "Adresse" })
 public class Person {
 
-    private static final Logger log = LoggerFactory.getLogger(Person.class);
+    @EmbeddedId
+    @JsonUnwrapped
+    private PersonId id;
 
-    @Id
-    @GeneratedValue
-    @Column
-    @JsonIgnore
-    private Long id;
-
-    @Column
-    private String surname;
-
-    @Column
-    private String forename;
+    private String telnumber;
 
     @OneToOne
-//    @JoinColumn(name = "address_id")
     private Address address;
 
+    @OneToOne
+    private Participant participant;
+
     public Person() {
-        this.forename = "";
-        this.surname = "";
+        this.telnumber = "";
         this.address = null;
+        this.id = new PersonId();
     }
 
-    public Long getId() {
+    public PersonId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(PersonId id) {
         this.id = id;
     }
 
-    @JsonProperty("Vorname")
-    public String getForename() {
-        return forename;
-    }
-
-    @JsonProperty("Vorname")
-    public void setForename(String forename) {
-        this.forename = forename;
-    }
-
-    @JsonProperty("Nachname")
-    public String getSurname() {
-        return surname;
-    }
-
-    @JsonProperty("Nachname")
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @JsonProperty("Telefonnummer")
+    public String getTelnumber() {
+        return telnumber;
+    }
+
+    @JsonProperty("Telefonnummer")
+    public void setTelnumber(String telnumber) {
+        this.telnumber = telnumber;
     }
 
     //---------------------------------------------------------------

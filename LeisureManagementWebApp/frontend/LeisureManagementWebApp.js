@@ -65,6 +65,7 @@ app.controller("WebAppController", function ($scope, $http, $q) {
 
                             if($scope.input_types[attribute] == "select") {
                                 $scope.foreign_ids[attribute] = request_data[attribute];
+                                // select -> column is object -> activate pretty-print
                                 $scope.is_foreign_id[attribute] = true;
                             }
                             else {
@@ -92,6 +93,8 @@ app.controller("WebAppController", function ($scope, $http, $q) {
     //---------------------------------------------------------------------
     // returns an input-type for a specific object type
     function getInputType(object) {
+        console.log(object);
+        console.log(typeof object);
         switch (typeof object) {
             case typeof Number(): return "number"; break;
             case typeof Boolean(): return "checkbox"; break;
@@ -103,6 +106,8 @@ app.controller("WebAppController", function ($scope, $http, $q) {
         }
     };
 
+    //---------------------------------------------------------------------
+    // pretty print objects
     this.printObject = function(object) {
         if(object != null) {
             var properties = Object.keys(object);
@@ -126,6 +131,8 @@ app.controller("WebAppController", function ($scope, $http, $q) {
         $scope.new_entry_visible = true;
     };
 
+    //---------------------------------------------------------------------
+    // posts a new entity to the DB
     this.postEntity = function() {
         var wa_ctrl = this;    // temp
 

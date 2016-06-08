@@ -18,9 +18,6 @@ public class PersonController{
     private static final Logger log = LoggerFactory.getLogger(Person.class);
 
     @Autowired
-    private AddressRepository address_repository_;
-
-    @Autowired
     protected RepositoryService service_;
 
     @RequestMapping(method = RequestMethod.GET)

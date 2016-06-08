@@ -17,9 +17,8 @@ public class InitializationController {
     private List<JavaScriptEntityLink> entities_ = new ArrayList<JavaScriptEntityLink>();;
 
     public InitializationController(){
-        this.entities_.add(new JavaScriptEntityLink("Greeting", "http://localhost:8080/greeting", "http://localhost:8080/greeting/list"));
-        this.entities_.add(new JavaScriptEntityLink("Person", "http://localhost:8080/person", "http://localhost:8080/person/list"));
-        this.entities_.add(new JavaScriptEntityLink("Address", "http://localhost:8080/address", "http://localhost:8080/address/list"));
+        this.entities_.add(new JavaScriptEntityLink("Personen", "http://localhost:8080/person", "http://localhost:8080/person/list"));
+        this.entities_.add(new JavaScriptEntityLink("Adressen", "http://localhost:8080/address", "http://localhost:8080/address/list"));
     }
 
     @RequestMapping(value = "/entities", method = RequestMethod.GET)
