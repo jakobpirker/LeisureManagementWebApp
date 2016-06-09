@@ -3,8 +3,6 @@ package backend_main.repositories;
 import backend_main.entities.Participant;
 import backend_main.entities.embedded_ids.PersonId;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public interface ParticipantRepository  extends CrudRepository<Participant, PersonId> {
 }

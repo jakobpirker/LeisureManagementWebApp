@@ -1,21 +1,21 @@
 package backend_main.services;
 
 import backend_main.entities.Address;
+import backend_main.entities.embedded_ids.AddressId;
 import backend_main.repositories.AddressRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+
 @Service
-public class AddressService {
+public class AddressService extends AbstractService<Address, AddressId, AddressRepository>{
 
-    @Autowired
-    private AddressRepository address_repository_;
-
-    public Address save(Address save_object){
-        return this.address_repository_.save(save_object);
-    }
-
-    public Iterable<Address> getList(){
-        return address_repository_.findAll();
+    public String getJsonStringObjectWithForeignIds() {
+        return (object_mapper_.valueToTree(new Address())).toString();
     }
 }
