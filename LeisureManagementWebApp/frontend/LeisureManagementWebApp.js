@@ -125,10 +125,6 @@ app.controller("WebAppController", function ($scope, $http, $q) {
         }
     };
 
-    this.showNewEntityFields = function( ){
-        $scope.new_entry_visible = true;
-    };
-
     //---------------------------------------------------------------------
     // posts a new entity to the DB
     this.postEntity = function() {
@@ -195,11 +191,22 @@ app.controller("WebAppController", function ($scope, $http, $q) {
     };
 
     //---------------------------------------------------------------------
+    // handles visibility of the column for new objects
+    this.showNewEntityFields = function( ){
+        $scope.new_entry_visible = !$scope.new_entry_visible;
+        $scope.new_db_object = new Object();
+    };
+
+    //---------------------------------------------------------------------
     // triggered, when a tab is selected in the html
     this.selectTab = function(setTab) {
 
         this.tab = setTab;
-        $scope.new_db_object = new Object();    // clear on tab-change
+
+        // clear on tab-change
+        $scope.new_db_object = new Object();
+        $scope.new_entry_visible = false;
+
         // search for the tab with the name setTab
         $scope.tabs.forEach(function(entry)
         {

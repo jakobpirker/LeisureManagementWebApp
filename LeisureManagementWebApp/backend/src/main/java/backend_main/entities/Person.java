@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 
@@ -18,7 +19,11 @@ public class Person {
     @JsonUnwrapped
     private PersonId id;
 
+    @JsonProperty("Telefonnummer")
     private String telnumber;
+
+    @JsonProperty("Anwesenheit")
+    private Boolean isattendant;
 
     @OneToOne
     private Address address;
@@ -29,6 +34,7 @@ public class Person {
     public Person() {
         this.telnumber = "";
         this.address = null;
+        this.isattendant = false;
         this.id = new PersonId();
     }
 
@@ -36,22 +42,8 @@ public class Person {
         return id;
     }
 
-    public void setId(PersonId id) {
-        this.id = id;
-    }
-
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @JsonProperty("Telefonnummer")
-    public String getTelnumber() {
-        return telnumber;
-    }
-
-    @JsonProperty("Telefonnummer")
-    public void setTelnumber(String telnumber) {
-        this.telnumber = telnumber;
     }
 
     //---------------------------------------------------------------

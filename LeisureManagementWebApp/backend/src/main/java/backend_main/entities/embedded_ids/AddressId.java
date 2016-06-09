@@ -1,5 +1,6 @@
 package backend_main.entities.embedded_ids;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -10,8 +11,13 @@ import java.io.Serializable;
 //@JsonPropertyOrder({})
 public class AddressId implements Serializable {
 
+    @JsonProperty("Strasse")
     private String street;
+
+    @JsonProperty("Stadt")
     private String city;
+
+    @JsonProperty("Postleitzahl")
     private Integer postalcode;
 
     public AddressId(){
@@ -20,34 +26,19 @@ public class AddressId implements Serializable {
         this.postalcode = 0;
     }
 
-    @JsonProperty("Postleitzahl")
+    @JsonIgnore
     public Integer getPostalCode() {
         return postalcode;
     }
 
-    @JsonProperty("Stadt")
+    @JsonIgnore
     public String getCity() {
         return city;
     }
 
-    @JsonProperty("Strasse")
+    @JsonIgnore
     public String getStreet() {
         return street;
-    }
-
-    @JsonProperty("Strasse")
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    @JsonProperty("Stadt")
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    @JsonProperty("Postleitzahl")
-    public void setPostalcode(Integer postalcode) {
-        this.postalcode = postalcode;
     }
 
     @Override
