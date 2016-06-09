@@ -38,7 +38,7 @@ public class Participant {
     private String accommodation_id;
 
     @JsonProperty("Unterkunft")
-    public String getAccommodation() {
+    public String getAccommodationJson() {
         if(this.accommodation != null)
         {
             return this.accommodation.getId();
@@ -54,6 +54,7 @@ public class Participant {
         this.accommodation_id = id_string;
     }
 
+    public Accommodation getAccommodation() { return this.accommodation; }
     public String getAccommodationId(){
         return this.accommodation_id;
     }

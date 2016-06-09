@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @JsonPropertyOrder({ "id", "Telefonnummer", "Adresse" })
@@ -27,6 +28,10 @@ public class Person {
 
     @OneToOne
     private Address address;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Payment> payments;
 
     public Person() {
         this.telnumber = "";

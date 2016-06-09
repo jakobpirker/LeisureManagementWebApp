@@ -44,4 +44,5 @@ public class ParticipantService extends AbstractService<Participant, PersonId, P
         ((ObjectNode) person).put("Unterkunft", address_ids);
 
         return person.toString();
-    }}
+    }
+}
