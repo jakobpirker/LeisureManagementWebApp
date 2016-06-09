@@ -1,47 +1,39 @@
 package backend_main.entities;
 
 import backend_main.entities.embedded_ids.AddressId;
-import backend_main.entities.embedded_ids.PersonId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 
 @Entity
-@JsonPropertyOrder({ "id", "Telefonnummer", "Adresse" })
-public class Person {
+public class Accommodation {
 
-    @EmbeddedId
-    @JsonUnwrapped
-    private PersonId id;
+    @Id
+    @JsonProperty("Unterkunft")
+    private String id;
 
-    @JsonProperty("Telefonnummer")
-    private String telnumber;
-
-    @JsonProperty("Anwesenheit")
-    private Boolean isattendant;
+    @JsonProperty("Zimmer")
+    private String room;
 
     @OneToOne
     private Address address;
 
-    public Person() {
-        this.telnumber = "";
-        this.address = null;
-        this.isattendant = false;
-        this.id = new PersonId();
-    }
+    @OneToOne(mappedBy = "accommodation", cascade=CascadeType.ALL)
+    @JsonIgnore
+    private Participant participant;
 
-    public PersonId getId() {
-        return id;
+    public Accommodation(){
+        this.id = "";
+        this.room = "";
+        this.address = null;
     }
 
     public void setAddress(Address address) {
         this.address = address;
     }
+    public String getId() {return this.id; }
 
     //---------------------------------------------------------------
     // serial- and deserializing specific content

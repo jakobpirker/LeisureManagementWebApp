@@ -20,6 +20,7 @@ public class InitializationController {
         this.entities_.add(new JavaScriptEntityLink("Personen", "http://localhost:8080/person", "http://localhost:8080/person/list"));
         this.entities_.add(new JavaScriptEntityLink("Adressen", "http://localhost:8080/address", "http://localhost:8080/address/list"));
         this.entities_.add(new JavaScriptEntityLink("Teilnehmer", "http://localhost:8080/participant", "http://localhost:8080/participant/list"));
+        this.entities_.add(new JavaScriptEntityLink("Unterkunft", "http://localhost:8080/accommodation", "http://localhost:8080/accommodation/list"));
     }
 
     @RequestMapping(value = "/entities", method = RequestMethod.GET)

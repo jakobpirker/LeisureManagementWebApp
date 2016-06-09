@@ -41,8 +41,8 @@ public class PersistenceConfiguration {
 
 		Properties jpaProperties = new Properties();
 		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//		jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
-		jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+		jpaProperties.put("hibernate.hbm2ddl.auto", "create-drop");
+//		jpaProperties.put("hibernate.hbm2ddl.auto", "update");
 		jpaProperties.put("hibernate.format_sql", "true");
 		em.setJpaProperties(jpaProperties);
 

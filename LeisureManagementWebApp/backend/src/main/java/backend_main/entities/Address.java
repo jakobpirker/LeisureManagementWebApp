@@ -20,6 +20,10 @@ public class Address {
     @JsonIgnore // uncommenting causes crash -> Person creates address, address creates Person again...
     private Person person;
 
+    @OneToOne(mappedBy = "address", cascade= CascadeType.ALL)
+    @JsonIgnore
+    private Accommodation accommodation;
+
     public Address(){
         id = new AddressId();
         person = null;
