@@ -3,9 +3,7 @@ package backend_main.entities;
 import backend_main.entities.embedded_ids.PersonId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 
@@ -38,10 +36,6 @@ public class Participant {
     @Transient
     @JsonIgnore
     private String accommodation_id;
-
-//    @JsonIgnore
-//    @Transient
-//    ObjectMapper mapper = new ObjectMapper();
 
     @JsonProperty("Unterkunft")
     public String getAccommodation() {
