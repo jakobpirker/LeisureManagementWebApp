@@ -1,12 +1,12 @@
 package backend_main.services;
 
+import backend_main.repositories.AbstractRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 
 import java.io.Serializable;
 
-public abstract class AbstractService<T_obj, T_id extends Serializable, T_rep extends CrudRepository<T_obj, T_id>> implements AbstractServiceInterface<T_obj>{
+public abstract class AbstractService<T_obj, T_id extends Serializable, T_rep extends AbstractRepository<T_obj, T_id>> implements AbstractServiceInterface<T_obj>{
 
     @Autowired
     protected T_rep base_repository_;
@@ -18,6 +18,6 @@ public abstract class AbstractService<T_obj, T_id extends Serializable, T_rep ex
     }
 
     public Iterable<T_obj> getList(){
-        return base_repository_.findAll();
+        return base_repository_.findAllByOrderByIdAsc();
     }
 }
