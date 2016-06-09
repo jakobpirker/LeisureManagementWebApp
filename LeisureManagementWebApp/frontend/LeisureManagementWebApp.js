@@ -93,8 +93,6 @@ app.controller("WebAppController", function ($scope, $http, $q) {
     //---------------------------------------------------------------------
     // returns an input-type for a specific object type
     function getInputType(object) {
-        console.log(object);
-        console.log(typeof object);
         switch (typeof object) {
             case typeof Number(): return "number"; break;
             case typeof Boolean(): return "checkbox"; break;
@@ -153,6 +151,47 @@ app.controller("WebAppController", function ($scope, $http, $q) {
                 });
             }
         });
+    };
+
+    //---------------------------------------------------------------------
+    // deletes a given entity from the DB
+    this.deleteEntity = function(index) {
+
+        var wa_ctrl = this;    // temp
+        var delete_obj = $scope.obj_list[index];
+
+        // search for the selected tab in the given entities for delete-url
+        $scope.available_entities.forEach(function(entry) {
+            if(wa_ctrl.tab === entry.label) {
+
+                // transform embedded objects to strings
+                var keys = Object.keys(delete_obj)
+                keys.forEach(function(key){
+                    if(typeof delete_obj[key] == typeof Object()) {
+                        delete_obj[key] = JSON.stringify(delete_obj[key]);
+                    }
+
+                });
+
+                // explicit call for setting the header type (wrong by default)
+                $http({
+                    method: 'DELETE',
+                    url: entry.entity_url,
+                    data: delete_obj,
+                    headers: {'Content-Type': 'application/json'}
+                })
+                .then(
+                    function(response) {    // success
+                        $scope.request_data = response.data;
+                        // on success reset current tab
+                        wa_ctrl.selectTab(wa_ctrl.tab);
+                    },
+                    function(response) {    // fail
+                        $scope.request_data = response;
+                    });
+            }
+        });
+
     };
 
     //---------------------------------------------------------------------

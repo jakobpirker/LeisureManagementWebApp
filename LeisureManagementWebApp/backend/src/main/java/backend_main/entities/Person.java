@@ -79,7 +79,12 @@ public class Person {
 
     @JsonProperty("Adresse")
     public void setAddressId(String id_string) throws Exception {
-        this.address_id = mapper.readValue(id_string, AddressId.class);
+        if(id_string != null) {
+            this.address_id = mapper.readValue(id_string, AddressId.class);
+        }
+        else {
+            this.address_id = null;
+        }
     }
 
     public AddressId getAddressId(){

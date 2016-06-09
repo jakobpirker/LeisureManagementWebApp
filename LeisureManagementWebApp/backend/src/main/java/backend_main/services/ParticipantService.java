@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ParticipantService extends AbstractService<Participant, PersonId, ParticipantRepository>{
 
-    public String getJsonStringObjectWithForeignIds() {
+    public String getJsonStringWithForeignIds() {
         return (object_mapper_.valueToTree(new Participant())).toString();
     }
 }

@@ -30,7 +30,7 @@ public class PersonService extends AbstractService<Person, PersonId, PersonRepos
         return this.base_repository_.save(save_person);
     }
 
-    public String getJsonStringObjectWithForeignIds() {
+    public String getJsonStringWithForeignIds() {
 
         JsonNode person = object_mapper_.valueToTree(new Person());
         JsonNode address_ids = object_mapper_.createArrayNode();

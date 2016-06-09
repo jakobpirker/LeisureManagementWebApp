@@ -17,6 +17,8 @@ public abstract class AbstractService<T_obj, T_id extends Serializable, T_rep ex
         return this.base_repository_.save(save_object);
     }
 
+    public void delete(T_obj delete_obj) { this.base_repository_.delete(delete_obj); }
+
     public Iterable<T_obj> getList(){
         return base_repository_.findAllByOrderByIdAsc();
     }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressService extends AbstractService<Address, AddressId, AddressRepository>{
 
-    public String getJsonStringObjectWithForeignIds() {
+    public String getJsonStringWithForeignIds() {
         return (object_mapper_.valueToTree(new Address())).toString();
     }
 }
