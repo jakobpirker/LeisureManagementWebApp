@@ -20,12 +20,6 @@ public class AddressId implements Serializable {
         this.postalcode = 0;
     }
 
-    public AddressId(String street, String city, Integer postalcode){
-        this.city = city;
-        this.street = street;
-        this.postalcode = postalcode;
-    }
-
     @JsonProperty("Postleitzahl")
     public Integer getPostalCode() {
         return postalcode;

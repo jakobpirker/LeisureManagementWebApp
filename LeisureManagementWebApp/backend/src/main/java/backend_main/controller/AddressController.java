@@ -1,7 +1,7 @@
 package backend_main.controller;
 
 import backend_main.entities.Address;
-import backend_main.services.RepositoryService;
+import backend_main.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AddressController{
 
     @Autowired
-    protected RepositoryService repository_service_;
+    protected AddressService repository_service_;
 
     @RequestMapping(method = RequestMethod.GET)
     public Address getRequest() {
@@ -27,6 +27,6 @@ public class AddressController{
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Iterable<Address> getList() {
-        return repository_service_.getAddresses();
+        return repository_service_.getList();
     }
 }

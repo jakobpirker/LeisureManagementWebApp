@@ -18,11 +18,6 @@ public class PersonId implements Serializable {
         this.forename = "";
     }
 
-    public PersonId(String surname, String forename){
-        this.surname = surname;
-        this.forename = forename;
-    }
-
     @JsonProperty("Nachname")
     public String getSurname() {
         return surname;
