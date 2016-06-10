@@ -3,7 +3,7 @@
 \subsection{REST}
 \textit{Representational State Transfer (abgekürzt REST, seltener auch ReST) bezeichnet ein Programmierparadigma für verteilte Systeme, insbesondere für Webservices.}\vspace{5mm}\footnote{\url{https://de.wikipedia.org/wiki/Representational_State_Transfer (10.6.16)}}
 
-REST verwiest auf einige Prinzipien, die vorausgesetzt werden, damit der implementierte Service als RESTful bezeichnet werden kann. Bei den Prinzipien handelt es sich um: Client-Server, Zustandslosigkeit, Caching, Einheitliche Schnittstelle, Mehrschichtige Systeme und Code on Demand (optional). Im Zuge des Projekts wurde Wert darauf gelegt, dass das System diese Eigenschaften erfüllt.
+REST verweist auf einige Prinzipien, die vorausgesetzt werden, damit der implementierte Service als RESTful bezeichnet werden kann. Bei den Prinzipien handelt es sich um: Client-Server, Zustandslosigkeit, Caching, eine Einheitliche Schnittstelle, Mehrschichtige Systeme und Code on Demand (optional). Im Zuge des Projekts wurde Wert darauf gelegt, dass das System diese Eigenschaften erfüllt.
 
 \subsection{Überblick}
 
@@ -23,7 +23,7 @@ Das Backend wurde in Java implementiert. Hier wurde Spring MVC als unterstützen
 Spring stellt mittels Spring-Data einige sehr praktische Werkzeuge zur Verfügung mit denen auf relationale Datenbanken zugegriffen werden kann. Es werden JPA-Schnittstellen zur Verfügung gestellt, die die Zuordnung und Übertragung von Objekten zu Datenbankeinträgen sehr stark vereinfachen.
 
 \subsubsection{Datenübertragung}
-Spring unterstützt außerdem einfache Wege, mittels denen URL's einfach auf Methoden gemappt, und die empfangenen http-Requests durch Lesen der Parameter in der URL oder der Daten im http-Body in Nutzbare Daten umgewandelt werden können.
+Spring unterstützt außerdem einfache Wege, mittels denen URL's einfach auf Methoden gemappt werden können. Die empfangenen http-Requests können durch Lesen der URL- Parameter oder der Daten im http-Body in nutzbare Daten umgewandelt werden.
 
 \subsection{Frontend: AngularJS/Javascript}
 Zur Erstellung des Frontends wurde das JavaScript Framework AngularJS verwendet. AngularJS erweitert HTML um Attribute. Diese Attribute schaffen erstens eine sehr gute Schnittstelle zwischen den HTML-Elementen und der dahinter liegenden JavaScript Logik und zweitens ermöglichen sie eine dynamische Anpassung der HTML-Struktur des Basisdokuments.

@@ -1,7 +1,7 @@
 \section{Motivation und Ziele}
-In fast allen Vereinen und Gemeinschaften werden öfters Freizeiten angeboten. Damit sind Veranstaltungen gemeint, bei denen Mitglieder gemeinsam (meistens für mehrere Tage) an einen bestimmten Ort fahren, um dort gemeinsam Zeit zu verbringen, um einer bestimmten Tätigkeit intensiv nachzukommen (z.B. Trainingslager)  oder Ähnliches. Mit der Anzahl der Teilnehmer steigt auch der Organisationsaufwand, und erreicht oft ein Maß bei dem die Organisation durch herkömmliche Methoden wie Absprache und "Papier und Stift" unwirtschaftlich bis unmöglich wird. 
+In fast allen Vereinen und Gemeinschaften werden öfters Freizeiten angeboten. Damit sind Veranstaltungen gemeint, bei denen Mitglieder gemeinsam (meistens für mehrere Tage) an einen bestimmten Ort fahren, um dort gemeinsam Zeit zu verbringen, um einer bestimmten Tätigkeit intensiv nachzukommen (z.B. Trainingslager)  oder Ähnliches. Mit der Anzahl der Teilnehmer steigt auch der Organisationsaufwand, und erreicht oft ein Maß bei dem die Organisation durch herkömmliche Methoden wie Absprache und \glqq{}Papier und Stift\grqq{}  unwirtschaftlich bis unmöglich wird. 
 
-Ziel dieser Arbeit war es, eine Basis zu schaffen, die die Organisation einer solchen Freizeit vereinfacht. Dies soll dadurch geschehen, dass die Anwendung eine Struktur für die Organisation vorgibt, in der oft benötigte Elemente bereits integriert sind, und direkt für die Organisation verwendet werden können. Einige Beispiele hierfür wären: Auflistung aller Teilnehmer, Überprüfung der Anwesenheiten und Veranstaltungsbeiträge jedes Teilnehmers, Aufgabenverteilungen... 
+Ziel dieser Arbeit ist es, eine Basis zu schaffen, die die Organisation einer solchen Freizeit vereinfacht. Dies soll dadurch geschehen, dass die im Rahmen des Projekts implementierte Anwendung eine Struktur für die Organisation vorgibt, in der oft benötigte Elemente bereits integriert sind, und direkt für die Organisation verwendet werden können. Einige Beispiele hierfür wären: Auflistung aller Teilnehmer, Überprüfung der Anwesenheiten und Veranstaltungsbeiträge jedes Teilnehmers, Aufgabenverteilungen... 
 Die grundlegenden Anforderungen sind in den nächsten Punkten aufgelistet. 
 
 \subsection{Webservice}
@@ -10,12 +10,12 @@ Eine wichtige Anforderung die sich aus der Verteilung von Aufgaben vergibt ist d
 \begin{itemize}
 	\item Bedienbarkeit von jedem internetfähigen Endgerät mit Browser
 	\item keine Notwendigkeit spezieller Software
-	\item zentrale Datenverwaltung
+	\item zentrale Datenverwaltung (Client-Server)
 \end{itemize}
 
 \subsection{Anpassbarkeit und Erweiterbarkeit}
 Die vorgegebene Struktur soll kein absoluter Maßstab sein, sondern der Anwender soll (wo möglich) selbst entscheiden können, welche Elemente er verwendet, und welche nicht.
-Außerdem soll die Applikation von einer anderen Person (mit Infromatik-Hintergrundwissen) möglichst einfach gewartet und an eine spezielle Freizeit angepasst werden können. Dies bezieht sich sowohl auf das Hinzufügen und Entfernen von Content auf der Client-Seite, als auch auf das Hinzufügen und Entfernen von zusätzlichen bzw. unnötigen Informations-Attributen und Funktionen auf der Server-Seite. Außerdem soll es möglich sein größere Informationselemente (z.B. Events) ohne viel Aufwand in die Datenstruktur zu integrieren.
+Außerdem soll die Applikation von einer anderen Person (mit Infromatik- Hintergrundwissen) möglichst einfach gewartet und an eine spezielle Freizeit angepasst werden können. Dies bezieht sich sowohl auf das Hinzufügen und Entfernen von Content auf der Client-Seite, als auch auf das Hinzufügen und Entfernen von zusätzlichen bzw. unnötigen Informations-Attributen und Funktionen auf der Server-Seite. Außerdem soll es möglich sein größere Informationselemente (z.B. Events) ohne viel Aufwand in die Datenstruktur zu integrieren.
 
 \subsection{Anforderungsübersicht}
-Es soll möglich sein Personen einzutragen, die Teilnehmer und/oder Mitarbeiter sein können, und für Personen Adressen festzulegen. Teilnehmer können einer Unterkunft zugewiesen werden, und für diese kann wiederum eine Adresse festgelegt werden. Jedem Mitarbeiter können mehrere Aufgaben zugewiesen werden. Jeder Person können mehrere Zahlungen zugewiesen werden, eine Zahlung kann wiederum einem Zahlungsdepot zugewiesen werden.  
+Es soll möglich sein Personen einzutragen, die Teilnehmer und/oder Mitarbeiter sein können, und für Personen Adressen festzulegen. Teilnehmer können einer Unterkunft zugewiesen werden, und für diese kann wiederum eine Adresse festgelegt werden. Jedem Mitarbeiter können mehrere Aufgaben zugewiesen werden. Jeder Person können mehrere Zahlungen zugewiesen werden, mehrere Zahlungen können wiederum einem Zahlungsdepot zugewiesen werden.  
