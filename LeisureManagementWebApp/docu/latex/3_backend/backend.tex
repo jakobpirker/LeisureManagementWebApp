@@ -4,6 +4,15 @@
 
 \subsubsection{Dependency Injection}
 
+Wie bereits erwähnt wurde als Framework für das Java-Backend Spring verwendet. Ein sehr nützliches Design-Konzept von Spring ist die Dependency Injection. 
+\vspace{5mm}\newline
+\textit{Als Dependency Injection wird in der objektorientierten Programmierung ein Entwurfsmuster bezeichnet, welches die Abhängigkeiten eines Objekts zur Laufzeit reglementiert: Benötigt ein Objekt beispielsweise bei seiner Initialisierung ein anderes Objekt, ist diese Abhängigkeit an einem zentralen Ort hinterlegt – es wird also nicht vom initialisierten Objekt selbst erzeugt.}\footnote{\url{https://de.wikipedia.org/wiki/Dependency_Injection}}
+\vspace{5mm}
+
+Die Abhängigkeit von einem anderen, existierenden Objekt wird im Code meistens über die \verb|@Autowire| -Annotation definiert. Durch dieses Entwurfsmuster ist es möglich, kurzen, gut leserlichen und gut wartbaren Code zu schreiben. Einerseits weil dadurch sehr viele Dinge nicht implementiert werden müssen, andererseits weil die Komponenten der Applikation klar getrennt werden können, da die Verknüpfungen automatisch zur Laufzeit erstellt werden.
+
+\subsubsection{JavaBeans}
+
 \subsection{Architektur}
 
 \subsubsection{Controller}
