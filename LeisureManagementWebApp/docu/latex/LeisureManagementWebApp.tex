@@ -6,6 +6,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{placeins}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -30,11 +31,15 @@
 	tabsize=2
 }
 
+\renewcommand{\lstlistingname}{Code-Segment}
+
 \lstset{style=mystyle, 
 		emph={@Entity, @JsonPropertyOrder, @Id, @GeneratedValue, @Column, @JsonIgnore, @OneToOne, @JsonProperty},
 		emphstyle=\color{codeorange}
 		}
 
+
+\newcommand{\zitat}[2]{\vspace{5mm}\textit{#1}\footnote{\url{#2}}\vspace{5mm}}
 
 %opening
 \title{Leisure-Management-Web-App}
@@ -49,14 +54,19 @@
 
 \newpage
 \input{1_introduction/introduction}
+\FloatBarrier
 \input{2_solutions/solutions}
 \newpage
+\FloatBarrier
 \input{3_backend/backend}
 \newpage
+\FloatBarrier
 \input{4_frontend/frontend}
 \newpage
+\FloatBarrier
 \input{6_installation/installation}
 \newpage
+\FloatBarrier
 \input{7_quellen/quellen}
 
 \end{document}

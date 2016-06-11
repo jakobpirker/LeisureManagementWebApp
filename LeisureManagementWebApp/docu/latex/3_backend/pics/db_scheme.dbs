@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="MySql" id="Project_22743ac4" html="y" template="Default" database="MySql" >
+	<schema name="webappdb" catalogname="webappdb" >
+		<table name="accommodation" >
+			<column name="id" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="room" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="address_city" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="address_postalcode" type="int" length="10" decimal="0" jt="4" />
+			<column name="address_street" type="varchar" length="255" decimal="0" jt="12" />
+			<index name="pk_accommodation" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="FK_bjpqyjm9sap8egg3rilfg67ln" unique="NORMAL" >
+				<column name="address_city" />
+				<column name="address_postalcode" />
+				<column name="address_street" />
+			</index>
+			<fk name="FK_bjpqyjm9sap8egg3rilfg67ln" to_schema="webappdb" to_table="address" >
+				<fk_column name="address_city" pk="city" />
+				<fk_column name="address_postalcode" pk="postalcode" />
+				<fk_column name="address_street" pk="street" />
+			</fk>
+		</table>
+		<table name="address" >
+			<column name="city" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="postalcode" type="int" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="street" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<index name="pk_address" unique="PRIMARY_KEY" >
+				<column name="city" />
+				<column name="postalcode" />
+				<column name="street" />
+			</index>
+		</table>
+		<table name="participant" >
+			<column name="firstname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="lastname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="accommodation_id" type="varchar" length="255" decimal="0" jt="12" />
+			<index name="pk_participant" unique="PRIMARY_KEY" >
+				<column name="firstname" />
+				<column name="lastname" />
+			</index>
+			<index name="FK_s8qs0i6kbkbel09yuprk9pyth" unique="NORMAL" >
+				<column name="accommodation_id" />
+			</index>
+			<fk name="FK_s8qs0i6kbkbel09yuprk9pyth" to_schema="webappdb" to_table="accommodation" >
+				<fk_column name="accommodation_id" pk="id" />
+			</fk>
+			<fk name="fk_participant_person" to_schema="webappdb" to_table="person" >
+				<fk_column name="firstname" pk="firstname" />
+				<fk_column name="lastname" pk="lastname" />
+			</fk>
+		</table>
+		<table name="payment" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="amount" type="double" length="22" decimal="0" jt="8" />
+			<column name="purpose" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="paymentaccount_id" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="person_firstname" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="person_lastname" type="varchar" length="255" decimal="0" jt="12" />
+			<index name="pk_payment" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="FK_9r5o0o5kpf7ai8wdt3p15m8fk" unique="NORMAL" >
+				<column name="person_firstname" />
+				<column name="person_lastname" />
+			</index>
+			<index name="FK_a2ipiyoofyk8yro2688028p3g" unique="NORMAL" >
+				<column name="paymentaccount_id" />
+			</index>
+			<fk name="FK_a2ipiyoofyk8yro2688028p3g" to_schema="webappdb" to_table="paymentaccount" >
+				<fk_column name="paymentaccount_id" pk="id" />
+			</fk>
+			<fk name="FK_9r5o0o5kpf7ai8wdt3p15m8fk" to_schema="webappdb" to_table="person" >
+				<fk_column name="person_firstname" pk="firstname" />
+				<fk_column name="person_lastname" pk="lastname" />
+			</fk>
+		</table>
+		<table name="paymentaccount" >
+			<column name="id" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="currentamount" type="int" length="10" decimal="0" jt="4" />
+			<index name="pk_paymentaccount" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="person" >
+			<column name="firstname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="lastname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="isattendant" type="bit" length="1" decimal="0" jt="-7" />
+			<column name="telnumber" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="address_city" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="address_postalcode" type="int" length="10" decimal="0" jt="4" />
+			<column name="address_street" type="varchar" length="255" decimal="0" jt="12" />
+			<index name="pk_person" unique="PRIMARY_KEY" >
+				<column name="firstname" />
+				<column name="lastname" />
+			</index>
+			<index name="FK_k7lpajxheamh6d7lgwltc65cq" unique="NORMAL" >
+				<column name="address_city" />
+				<column name="address_postalcode" />
+				<column name="address_street" />
+			</index>
+			<fk name="FK_k7lpajxheamh6d7lgwltc65cq" to_schema="webappdb" to_table="address" >
+				<fk_column name="address_city" pk="city" />
+				<fk_column name="address_postalcode" pk="postalcode" />
+				<fk_column name="address_street" pk="street" />
+			</fk>
+		</table>
+		<table name="person_payment" >
+			<column name="Person_firstname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="Person_lastname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="payments_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="UK_jgxw73ygf3royuxe2no91ned6" unique="UNIQUE" >
+				<column name="payments_id" />
+			</index>
+			<index name="FK_mq6u9d15vm28mkot21epuf1ay" unique="NORMAL" >
+				<column name="Person_firstname" />
+				<column name="Person_lastname" />
+			</index>
+			<fk name="FK_jgxw73ygf3royuxe2no91ned6" to_schema="webappdb" to_table="payment" >
+				<fk_column name="payments_id" pk="id" />
+			</fk>
+			<fk name="FK_mq6u9d15vm28mkot21epuf1ay" to_schema="webappdb" to_table="person" >
+				<fk_column name="Person_firstname" pk="firstname" />
+				<fk_column name="Person_lastname" pk="lastname" />
+			</fk>
+		</table>
+		<table name="staff" >
+			<column name="firstname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="lastname" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<index name="pk_staff" unique="PRIMARY_KEY" >
+				<column name="firstname" />
+				<column name="lastname" />
+			</index>
+			<fk name="fk_staff_person" to_schema="webappdb" to_table="person" >
+				<fk_column name="firstname" pk="firstname" />
+				<fk_column name="lastname" pk="lastname" />
+			</fk>
+		</table>
+		<table name="task" >
+			<column name="id" type="varchar" length="255" decimal="0" jt="12" mandatory="y" />
+			<column name="materials" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="staff_firstname" type="varchar" length="255" decimal="0" jt="12" />
+			<column name="staff_lastname" type="varchar" length="255" decimal="0" jt="12" />
+			<index name="pk_task" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="FK_cnlx7r2qbk53o1ufu3d8k6tmb" unique="NORMAL" >
+				<column name="staff_firstname" />
+				<column name="staff_lastname" />
+			</index>
+			<fk name="FK_cnlx7r2qbk53o1ufu3d8k6tmb" to_schema="webappdb" to_table="staff" >
+				<fk_column name="staff_firstname" pk="firstname" />
+				<fk_column name="staff_lastname" pk="lastname" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="MySql" database="MySql" driver_class="com.mysql.jdbc.Driver" driver_jar="mysql-connector-java-5.1.38-bin.jar" host="localhost" port="3306" instance="webappdb" user="root" />
+	<layout id="Layout_2a3a3751" name="Default" show_column_type="y" show_relation_cascade="y" >
+		<entity schema="webappdb" name="person" color="f5d8b3" x="300" y="45" />
+		<entity schema="webappdb" name="staff" color="f5d8b3" x="300" y="240" />
+		<entity schema="webappdb" name="task" color="f5d8b3" x="300" y="360" />
+		<entity schema="webappdb" name="address" color="b3ccf5" x="555" y="45" />
+		<entity schema="webappdb" name="accommodation" color="b3ccf5" x="555" y="180" />
+		<entity schema="webappdb" name="participant" color="b3ccf5" x="555" y="360" />
+		<entity schema="webappdb" name="payment" color="bef5b3" x="45" y="45" />
+		<entity schema="webappdb" name="paymentaccount" color="bef5b3" x="45" y="240" />
+	</layout>
+	<layout id="Layout_139d068f" name="Layout with Groups" show_relation_columns="y" >
+		<entity schema="webappdb" name="accommodation" color="b3ccf5" x="435" y="165" />
+		<entity schema="webappdb" name="address" color="b3ccf5" x="630" y="165" />
+		<entity schema="webappdb" name="participant" color="b3ccf5" x="630" y="345" />
+		<entity schema="webappdb" name="payment" color="bef5b3" x="435" y="585" />
+		<entity schema="webappdb" name="paymentaccount" color="bef5b3" x="630" y="780" />
+		<entity schema="webappdb" name="person" color="f5d8b3" x="45" y="165" />
+		<entity schema="webappdb" name="person_payment" color="bef5b3" x="630" y="585" />
+		<entity schema="webappdb" name="staff" color="f5d8b3" x="240" y="165" />
+		<entity schema="webappdb" name="task" color="f5d8b3" x="240" y="375" />
+		<callout x="45" y="45" pointer="NO" >
+			<comment><![CDATA[This layout demonstrates the grouping of tables and creation of multiple layouts. 
+Layouts and the schema structure will be saved to project file.
+Layouts can be closed by clicking the 'x' on the layout tab.
+
+Delete this callout from its right-click pop-up.]]></comment>
+		</callout>
+		<group name="person" color="f7f4f0" >
+			<entity schema="webappdb" name="person" />
+			<entity schema="webappdb" name="staff" />
+			<entity schema="webappdb" name="task" />
+		</group>
+		<group name="accommodation" color="f0f3f7" >
+			<entity schema="webappdb" name="accommodation" />
+			<entity schema="webappdb" name="address" />
+			<entity schema="webappdb" name="participant" />
+		</group>
+		<group name="payment" color="f1f7f0" >
+			<entity schema="webappdb" name="payment" />
+			<entity schema="webappdb" name="person_payment" />
+			<entity schema="webappdb" name="paymentaccount" />
+		</group>
+	</layout>
+	<layout id="Layout_31a4f9c" name="Layout with Relational Data Browse" show_relation_columns="y" >
+		<entity schema="webappdb" name="accommodation" color="b3ccf5" x="435" y="165" />
+		<entity schema="webappdb" name="address" color="b3ccf5" x="630" y="165" />
+		<entity schema="webappdb" name="participant" color="b3ccf5" x="630" y="345" />
+		<entity schema="webappdb" name="payment" color="bef5b3" x="435" y="585" />
+		<entity schema="webappdb" name="paymentaccount" color="bef5b3" x="630" y="780" />
+		<entity schema="webappdb" name="person" color="f5d8b3" x="45" y="165" />
+		<entity schema="webappdb" name="person_payment" color="bef5b3" x="630" y="585" />
+		<entity schema="webappdb" name="staff" color="f5d8b3" x="240" y="165" />
+		<entity schema="webappdb" name="task" color="f5d8b3" x="240" y="375" />
+		<callout x="45" y="45" pointer="NO" >
+			<comment><![CDATA[Using the Relational Data Browse you can explore data from multiple tables at a time, avoiding complicated queries. 
+The tables should be bind by foreign keys. Press the arrow icon near the title to descend into further tables. 
+If your schema misses foreign keys, create VIRTUAL foreign keys by drag and drop of a column over another column.
+Right-click the table header to set filters.]]></comment>
+		</callout>
+		<browser id="Browse_cdfb86b" name="Sample Relational Data Browse" >
+			<browse_table schema="webappdb" entity="person" x="10" y="10" width="400" height="300" >
+				<browse_table schema="webappdb" entity="address" fk="FK_k7lpajxheamh6d7lgwltc65cq" x="420" y="10" width="400" height="300" record_view="y" />
+			</browse_table>
+		</browser>
+	</layout>
+</project>
