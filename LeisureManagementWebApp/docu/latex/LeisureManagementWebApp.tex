@@ -34,12 +34,15 @@
 \renewcommand{\lstlistingname}{Code-Segment}
 
 \lstset{style=mystyle, 
-		emph={@Entity, @JsonPropertyOrder, @Id, @GeneratedValue, @Column, @JsonIgnore, @OneToOne, @JsonProperty},
+		emph={@EmbeddedId, @JsonUnwrapped, @Entity, @JsonPropertyOrder, @Id, @GeneratedValue, @Column, @JsonIgnore, @OneToOne, @JsonProperty, @OneToMany},
 		emphstyle=\color{codeorange}
 		}
 
 
 \newcommand{\zitat}[2]{\vspace{5mm}\textit{#1}\footnote{\url{#2}}\vspace{5mm}}
+
+\newcommand{\nosectionheadline}[1]{\vspace{5mm} \parindent0pt \fontfamily{phv} \selectfont \large
+	\small \textbf{#1} \normalsize \normalfont \vspace{3mm}}
 
 %opening
 \title{Leisure-Management-Web-App}

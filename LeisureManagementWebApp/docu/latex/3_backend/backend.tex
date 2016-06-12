@@ -39,20 +39,148 @@ In Abbildung \ref{fig:architecture_backend} ist eine grobe Übersicht über die 
 \FloatBarrier
 \subsubsection{Entities}
 
-\begin{lstlisting}[caption=, label=amb]
-Put your code here.
+Die Entity-Klassen sind das Zentrum der Backend-Struktur. Da einer der wichtigsten Aspekte des Projekts Anpassbarkeit und Erweiterbarkeit ist, war es wichtig möglichst zentrale, und klar definierte Schnittstellen dafür zu schaffen. Außerdem sollten diese Schnittstellen so unabhängig wie möglich sein, und in wenig Stellen im restlichen Code berücksichtigt werden müssen. Die wesentlichste dieser Schnittstellen ist eine Entity-Klasse. Einerseits wird hier die Verbindung und das Mapping zur Datenbank festgelegt, andererseits sind fast sämtliche Informationen für die De- und Serialisierung in für das Frontend interpretierbare Daten an dieser Stelle festgelegt. In dem Code-Segment \ref{PaymentAccount} ist exemplarisch eine Entity-Klasse abgebildet, anhand der die Funktionalität der einzelnen Komponenten erklärt wird.
+
+\footnotesize
+\begin{lstlisting}[caption=PaymentAccount.java, label=PaymentAccount, language=Java]
+@Entity
+public class PaymentAccount {
+
+	@Id
+	@JsonProperty("Depot")
+	private String id;
+	
+	@JsonProperty("Betrag")
+	private Integer currentamount;
+	
+	@OneToMany(mappedBy = "paymentaccount", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Payment> payments;
+	
+	public PaymentAccount() {
+		this.id = "";
+		this.currentamount = 0;
+	}
+	
+	public String getId() { 
+		return this.id; 
+	}
+}
 \end{lstlisting}
+\normalsize
+
+\nosectionheadline{Verbindung zur Datenbank}
+
+Die im Projekt verwendeten Annotations zur festlegung der JPA-Eigenschaften sind:
+
+\begin{itemize}
+	\item \verb|@Entity|: Markiert eine Klasse als Entity Klasse. Für jede Entity-Klasse wird eine neue Tabelle im Datenbankschema angelegt. Alle in der Klasse festgelegten Membervariablen werden auch als Einträge in der Tabelle der Datenbank erstellt. Für jeden Member wird eine Zeile erstellt. Die meisten zur Zeile zugehörigen Attribute wie z.B. Datentyp werden (sofern möglich) automatisch festgelegt. Für manche Attribute wie z.B. den Zeilen-Namen gibt es aber Wege um sie manuell festzulegen (vgl. z.B. \verb|@Column|).
+	\item \verb|@Id|: Kennzeichnet ein Attribut als Primärschlüssel einer Tabelle. Jede Entity-Klasse muss mindestens einen Primärschlüssel festlegen. Es ist aber auch möglich mehrere Attribute als Primärschlüssel festzulegen. Darauf wird später noch näher eingegangen. Beim gezeigten Beispiel wird ein String, der die Bezeichnung des Payment-Accounts enthält als Primärschlüssel verwendet.
+	\item \verb|@OneToMany|, \verb|@OneToOne|, \verb|@ManyToOne|...: Damit wird eine Relation zu einer anderen Tabelle festgelegt. Die Bezeichnung der Annotation entspricht dabei der Art der Relation. Diese Annotations werden auf ein Objekt der referenzierten Klasse (= Tabelle) angewandt. Ein Payment-Account kann von mehreren Payments aus referenziert werden (weshalb es sich bei der Membervariable auch um ein \verb|List<>|-Objekt handelt). Der Zusatz \verb|mappedBy| drückt dabei aus, dass es sich bei dieser Seite der Relation nicht um den Owner handelt. Das bedeutet, dass die verweisenden Sekundärschlüssel in der Tabelle des anderen Objekts gespeichert werden. Über \verb|cascade = CascadeType.ALL| wird das Framework angewiesen, Änderungen die sich auf referenzierte Objekte auswirken (in diesem Fall Payments) auch in die Datenbank zu übertragen.
+	\item \verb|@EmbeddedId|: Eine (und die im Projekt verwendete) Methode einen zusammengesetzten Primärschlüssel festzulegen.
+	\item \verb|@Column|: Explizite Deklaration einer Membervariable als Zeile in einer Tabelle. Mit Hilfe dieser Annotations können auch explizit Namen vergeben werden, auf die ein Member in der Tabelle gemappt wird.
+	\item \verb|@Transient|: Kennzeichnet eine Member-Variable die nicht als Zeile in die zugehörige Tabelle übernommen werden soll.
+	\item \verb|@GeneratedValue|: Teilt der Datenbank mit, dass die zugehörige Zeile in der Tabelle von der Datenbank selbst automatisch beschrieben wird. Diese Annotation ist für eine automatische Id-Vergabe sehr hilfreich.
+\end{itemize}
+
+Die Auswirkungen auf das tatsächliche Datenbankschema können in Abbildung \ref{fig:db_scheme} nachvollzogen werden.
 
 \begin{figure}[h]
-\centering
-\includegraphics[width=\linewidth]{3_backend/pics/db_scheme}
-\caption{Datenbank Schema}
-\label{fig:db_scheme}
+	\centering
+	\includegraphics[width=0.9\linewidth]{3_backend/pics/db_scheme}
+	\caption{Datenbank Schema}
+	\label{fig:db_scheme}
 \end{figure}
 
+\nosectionheadline{DeSerialisierung}
+
+Für diese Aufgabe wurde die in Spring bereits integrierte Jackson-JSON-Library verwendet. Diese Library unterstützt das automatische aber gleichzeitig sehr frei definierbare umwandeln von JSON-Objekten auf POJO's (PlainOldJavaObjects). Diese Funktion erweist sich beim parsen der http-requests sehr nützlich. Dadurch können die empfangenen Daten direkt auf ein POJO gemappt, und das daraus entstehende Objekt ganz normal verwendet werden. Umgekehrt können im Laufe der Backend-Operationen erstellte oder bearbeitete Objekte wieder ganz einfach in für das Frontend verständliche JSON Objekte umgewandelt und zurückgesendet werden. Die verwendeten Annotations werden im folgenden kurz beschrieben:
+
+\begin{itemize}
+	\item \verb|@JsonProperty|: Kennzeichnet einen Member explizit relevant für die Umwandlung in ein JSON-Objekt. Dieser Annotation kann ein Parameter zugeteilt werden. Der wird später in das JSON-Objekt statt dem Member-Namen eingefügt. Das erweißt sich vor allem dadurch sehr nützlich, weil im Frontend dann ohne Umwege der Name des Attributes mit dem Wert für die Anzeige verwendet werden kann. Auch werden die Werte von JSON-Objekten, die mit diesem Attribut Namen versehen sind wieder auf diesen Member gemappt.
+	\item \verb|@JsonIgnore|: Kennzeichnet eine Member-Variable als nicht relevant für die JSON-DeSerialisierung
+	\item \verb|@JsonUnwrapped|: Markiert ein eingebettetes Objekt, das mittels der Library DeSerialisiert werden, und die Membervariablen direkt (also nicht als eigenes Objekt) in das übergeordnete Objekt integriert werden soll.
+	\item \verb|@JsonPropertyOrder|: Definiert die Reihenfolge, mit der die Attribute DeSerialisiert werden sollen.
+\end{itemize}
+
+Das POJO \verb|PaymentAccount(id = "Bankkonto", currentamount = 1351.16)| würde \newline dem JSON \verb|{"Depot":"Bankkonto","Betrag":1351.16}| entsprechen.
+
+\nosectionheadline{DeSerialisierung von relationalen Objekten}
+
+Eine Schwierigkeit bei der DeSerialisierung stellten Objekte dar, die über Relationen in die Klasse eingebettet sind. Erstens weil dadurch das Problem der Rekursion entsteht (Objekt A hat eine Membervariable vom Objekt B, das wiederum eine Membervariable vom Objekt C besitzt usw.). Würde diese Rekursion so umgesetzt werden, müsste ein JSON-Objekt die Informationen des Grundobjekts und aller rekursiv eingebetteten Objekte enthalten. Zweitens ist für die Verwendung eines Objektes meistens nur die Verknüpfung interessant. Es ist wichtig zu wissen, mit welchem(n) Objekt(en) Verknüpfungen bestehen, die Details der verknüpften Objekte werden aber besser an einer anderen Stelle geklärt. Aus diesen Überlegungen heraus, hat sich die Lösung ergeben, die DeSerialisierung solcher Objekte auf die Id's derselben zu reduzieren, da die Id das fremde Objekt eindeutig definiert. Diese Funktionalität wurde mit Hilfe von \verb|@JsonProperty|, das auf Getter und Setter der Foreign-Id angewendet wurde, realisiert. Ein Beispiel hierfür ist im Code-Segment \ref{cs:foreign_id_mapping} zu sehen.
+
+\footnotesize
+\begin{lstlisting}[caption=Foreign-Id mapping für die Address-Entity in Person.java, label=cs:foreign_id_mapping, language=Java]
+
+	@EmbeddedId
+	@JsonUnwrapped
+	private PersonId id;
+	
+	/* --- content omitted --- */
+	
+	@JsonProperty("Adresse")
+	public AddressId getAddress() {
+	   	if(this.address != null)
+	   	{
+	   		return this.address.getId();
+	   	}
+	   	else
+	   	{
+	   		return null;
+	   	}
+	}
+	
+	@JsonProperty("Adresse")
+	public void setAddressId(String id_string) throws Exception {
+	   	if(id_string != null) {
+	   		this.address_id = mapper.readValue(id_string, AddressId.class);
+	   	}
+	   	else {
+	   		this.address_id = null;
+	   	}
+	}
+\end{lstlisting}
+\normalsize
+
+Ein JSON-Objekt der Person-Entityklasse könnte demnach wie im Code-Segment \ref{cs:person_json}
+
+\footnotesize
+\begin{lstlisting}[label = cs:person_json, caption = Beispiel für ein Serialisiertes JSON-Objekt]
+{	
+	"Nachname":"Pirker",
+	"Vorname":"Jakob",
+	"Telefonnummer":"123456789",
+	"Adresse":{"Strasse":"MeinBlock","Stadt":"MeineStadt","Postleitzahl":1111},
+	"Anwesenheit":true
+}
+\end{lstlisting}
+\normalsize
+
+\nosectionheadline{Primärschlüssel mit mehreren Attributen}
+
+Aus der Reduzierung eines Objekts auf seine Id ergibt sich (speziell im Hinblick auf das Frontend) die zusätzliche Anforderung an die Id, dass sie vom User direkt durch lesen einem Objekt zugeordnet werden können soll. Will man zum Beispiel eine Zahlung einer Person zuordnen, so reichen Vorname und Nachname aus, um die Person eindeutig zu kennzeichnen. Gleichzeitig erfüllt die Kombination der Attribute aber auch die Haupteigenschaft einer Id: Eindeutigkeit. Würde man einer Person zum Beispiel nur eine Zahl als Id zuordnen, wäre diese zwar eindeutig, aber ein User müsste zuerst herausfinden, um welche Person es sich dabei handelt. Diese Anforderung macht Primärschlüssel mit mehreren Attributen notwendig. Dazu gibt es zwei verschiedene Implementierungsmöglichkeiten: \verb|@IdClass| und \verb|@EmbeddedId|. Beide setzen eine Zwischenklasse, die als Id fungiert voraus.
+
+\begin{itemize}
+	\item \verb|@IdClass|
+	\begin{itemize}
+		\item Vorteile: Id-Klasse muss zwar definiert werden, scheint aber in der Entity-Klasse nicht auf. Dadurch bleibt der Code besser lesbar, weil nur bei der Implementierung darauf geachtet werden muss, dass sich die Id's der Entity-Klasse mit denen der Basisklasse decken. Anschließend braucht nur mehr die Entity-Klasse betrachtet werden.
+		\item Nachteile: Doppelter Code, weil für beide Klassen die gleichen Attribute definiert werden müssen. Umständliche DeSerialisierbarkeit.
+	\end{itemize}	
+	\item \verb|@EmbeddedId|
+	\begin{itemize}
+		\item Vorteile: Kein doppelter Code. Die Serialisierung erfolgt bei Verwendung der \verb|@JsonUnwrapped| vollkommen automatisch. bei der Deserialisierung kann der von der Jackson-JSON-Library zur Verfügung gestellte Mapper sehr gut verwendet werden. 
+		\item Nachteile: Für eine vollständige Übersicht über die Attribute der Entity-Klasse muss die Id-Klasse explizit mitberücksichtigt werden.
+	\end{itemize}
+\end{itemize}
+
+Aufgrund der Serialisierbarkeit wurde die \verb|@EmbeddedId|-Variante gewählt. Ein Implementierungsbeispiel ist ebenfalls im Code-Segment \ref{cs:foreign_id_mapping} zu sehen.
 
 \subsubsection{Repositories}
+
+\nosectionheadline{Named Queries}
 
 \subsubsection{Services}
 
 \subsubsection{Controller}
+
+\subsubsection{Schritte für die Integration einer neuen Entität}
