@@ -31,10 +31,25 @@
 	tabsize=2
 }
 
+\lstdefinelanguage{JavaScript}{
+	keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywordstyle=\color{blue},
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{Gray},
+	stringstyle=\color{codegreen},
+	morestring=[b]',
+	morestring=[b]"
+}
+
 \renewcommand{\lstlistingname}{Code-Segment}
 
 \lstset{style=mystyle, 
-		emph={@EmbeddedId, @JsonUnwrapped, @NoRepositoryBean, @Entity, @JsonPropertyOrder, @Id, @GeneratedValue, @Column, @JsonIgnore, @OneToOne, @JsonProperty, @OneToMany, @Autowired, @RequestMapping, @RestController, @RequestBody, @Service, @Override},
+		emph={@EmbeddedId, @JsonUnwrapped, @NoRepositoryBean, @Entity, @JsonPropertyOrder, @Id, @GeneratedValue, @Column, @JsonIgnore, @OneToOne, @JsonProperty, @OneToMany, @Autowired, @RequestMapping, @RestController, @RequestBody, @Service, @Override, \$scope},
 		emphstyle=\color{codeorange}
 		}
 

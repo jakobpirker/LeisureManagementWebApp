@@ -253,36 +253,6 @@ public class PersonController extends AbstractController<Person, PersonService>{
 \end{lstlisting}
 \normalsize
 
-\scriptsize
-\begin{lstlisting}[caption=AbstractController.java, label=cs:AbstractController, language=Java]
-public abstract class AbstractController<T_obj extends Object, T_serv extends AbstractServiceInterface<T_obj>> {
-
-@Autowired
-protected T_serv service_;
-
-@RequestMapping(method = RequestMethod.GET)
-public String getRequest() {
-return service_.getJsonStringWithForeignIds();
-}
-
-@RequestMapping(method = RequestMethod.POST)
-public T_obj postRequest(@RequestBody T_obj new_obj) {
-return this.service_.save(new_obj);
-}
-
-@RequestMapping(method = RequestMethod.DELETE)
-public void deleteRequest(@RequestBody T_obj delete_obj) {
-this.service_.delete(delete_obj);
-}
-
-@RequestMapping(value = "/list", method = RequestMethod.GET)
-public Iterable<T_obj> getList() {
-return service_.getList();
-}
-}
-\end{lstlisting}
-\normalsize
-
 Ein GET-Request auf die URL \verb|http://localhost:8080/person/list| könnte folgende Response-Daten liefern:
 
 \scriptsize
