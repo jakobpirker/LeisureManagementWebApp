@@ -1,1 +1,11 @@
-\section{Installation und Anmerkungen}
+\section{Installation}
+
+\begin{enumerate}
+	\item Installation von MySQL: \url{https://dev.mysql.com/downloads/installer/}. Einfach dem Installations-Wizard folgen, und das Paket mit den empfohlenen Einstellungen installieren. Für den Admin muss der name \verb|root|, und als passwort muss auch \verb|root| verwendet werden. Danach muss über den MySQL Command Line Client die Datenbank \verb|springbootdb| angelegt werden. Das funktioniert über den Befehl \verb|create database test;|. Alternativ können Admin, Passwort und Datenbankname in der Datei 
+	\begin{lstlisting}
+		...\LeisureManagementWebApp\backend\src\main\java\backend_main\configuration\PersistenceConfiguration.java
+	\end{lstlisting}
+	geändert werden.
+	\item Ausführen des Skripts \verb|run_webapp.bat|.
+	\item Spaß Haben 
+\end{enumerate}

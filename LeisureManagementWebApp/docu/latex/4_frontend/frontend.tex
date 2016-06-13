@@ -14,7 +14,13 @@ AngularJS erweitert nicht nur die View-Elemente des Frontends, sondern es stellt
 	\item Vermischung von Verantwortlichkeiten
 \end{itemize}
 
-\subsection{Tabs}
+\subsection{Architektur}
+
+Im Hinblick auf die Anwendung war eine wichtige Anforderung an das Frontend, dass statischer Inhalt leicht in die vorhandene Navigationsumgebung integriert werden muss, um möglichst einfach zusätzliche Funktionen und Informationen hinzuzufügen.
+
+Weiters war es wichtig, ein Konzept zu entwerfen, mit dem Entitäten einheitlich angezeigt und bearbeitet werden können. Die Grundlagen dafür wurden im Backend bereits gelegt. Im Frontend galt es, die Schnittstellen einheitlich zu verarbeiten, und einheitliche Konzepte für die Benutzerinteraktion zu entwickeln.
+
+\subsubsection{Tabs}
 Tabs sind eine sehr gute Möglichkeit, Weboberflächen Übersichtlich, und gut navigierbar zu gestalten. Das Framework Bootstrap stellt hierzu schon CSS-Klassen zur Verfügung, mit denen sich Tabs leicht erstellen lassen. In Verbindung mit Angular kann so sehr gut eine leicht zu erweitende Tab-Umgebung eingerichtet werden. Im JavaScript Teil des Frontends braucht lediglich eine Zeile bei der Angular-Controller initialisierung hinzugefügt werden:
 
 \scriptsize
@@ -49,7 +55,7 @@ Ein sehr guter Nebeneffekt dieses Seiten-Design ist, dass sich alles auf einer e
 
 Wichtig zu erwähnen ist auch noch, dass das Backend eine Initialisierungs-URL zur Verfügung stellt, die eine JSON-Liste mit allen Verfügbaren Entitäten und den dazugehörigen, in den Controllern festgelegten mappings, Referenz URL's. Dadurch wird automatisch beim Öffnen der Seite für jede Verfügbare Entität ein Tab erstellt, der das Bearbeiten und Anzeigen der Entitäten ermöglicht.
 
-\subsection{Eingabeform}
+\subsubsection{Eingabeform}
 
 Nun ist es natürlich wünschenswert, in jedem Entity-Tab die Möglichkeit zu haben, ein neues Objekt der Entität zur Datenbank hinzuzufügen. Aus diesem Grund wurde eine Form erstellt, die genau das ermöglicht. Über den zur Entität gehörenden GET-Request wird wie schon vorher erläutert ein JSON-Objekt das die Struktur der gewählten Entität enthält. Aufgrund dieses Objektes ist es möglich, für jedes Attribut der Entität ein passendes Eingabeelement zu erzeugen. So wird zum Beispiel für die Telefonnummer einer Person ein Textfeld erzeugt da es sich um eine Variable vom Typ \verb|String|, für das Attribut Anwesenheit aber eine Checkbox, da es vom Typ \verb|Boolean| ist. Nun bleibt noch die Frage nach den Fremdschlüsseln offen. Dieses Problem wird im selben Abschnitt gelöst. Das alle verfügbaren Fremdschlüssel sich ja schon im empfangenen JSON-Objekt befinden, können diese ganz einfach über eine Drop-Down Leiste in die Eingabeform integriert werden. Ein Ausschnitt dazu ist in Abbildung \ref{fig:input_form} zu sehen. Mit diesem Konzept ist es sehr einfach möglich dynamisch eine sehr gute Eingabeform zu erstellen.
 
@@ -78,7 +84,7 @@ Nun ist es natürlich wünschenswert, in jedem Entity-Tab die Möglichkeit zu ha
 \end{figure}
 
 
-\subsection{Tabellen}
+\subsubsection{Tabellen}
 
 Der letzte offene Punkt ist die Darstellung der bereits in der Datenbank vorhandenen Objekte. Grundsätzlich werden auch diese über den Controller der jeweiligen Entität abgefragt, und als JSON-Liste ans Frontend gesendet. Mit AngularJS können diese Daten dann dynamisch in einer Tabelle werden. Dazu ist als Vorkenntnis nur die Struktur der Daten notwendig, die sowieso schon durch die Erstellung der Eingabe-Form vorhanden ist. Die Erstellung dieser Liste ist im Code-Segment \ref{cs:input_form} zu sehen.
 
